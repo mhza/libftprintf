@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/23 17:21:11 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/13 17:11:27 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/14 17:53:42 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ char		*ft_uitoa_b(unsigned int value, int base)
 	char			*tmp;
 
 	size = ft_intlen_base(value, base);
+	//ft_putstr(" sft_uitoa_b base = ");ft_putnbr(value);
 	if (!(tmp = (char*)malloc(sizeof(char) * size + 1)))
 		return (NULL);
 	tmp[size] = '\0';

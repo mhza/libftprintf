@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/17 18:06:02 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/14 15:19:27 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/14 23:55:08 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <wchar.h>
 
 # define U_MAX_BYTES 4
-# define LTYPES "sSpdDioOuUxXcCgG"
+# define LTYPES "sSpjdDioOuUxXcCgG%"
 # define ABS(value)  (value > 0 ? value : -value)
 
 # define HH 1
@@ -53,6 +53,12 @@
 # define WCHAR_T_PTR 24
 # define VOID_PTR 25
 
+typedef struct	s_arg {
+	char	*suffix;
+	char	*prefix;
+	char	*param;
+}				t_arg;
+
 typedef struct	s_flags {
 	int		hashtag;
 	int		zero;
@@ -61,6 +67,7 @@ typedef struct	s_flags {
 	int		space;
 	int		width;
 	int		precision;
+	int		percent;
 	int		ic;
 	int		fc;
 	char	type;
@@ -74,6 +81,7 @@ void			ft_special_flags(char *str, t_flags *sflags);
 void			ft_set_flags(t_flags *sflags, char *flags, int len);
 char			*ft_get_flags(char *str);
 char			*ft_uitoa_b(unsigned int value, int base);
+char			*ft_ulitoa_b(unsigned long value, int base);
 char			*ft_man_width(char *param, t_flags *sflags);
 char			*ft_man_precision(char *param, t_flags *sflags);
 char			*ft_man_minus(char *param);
@@ -137,10 +145,10 @@ void				ft_putnbrl(int n);
 void				ft_putints(int *tab, int size);
 void				ft_puttab_int(int **tab, int size, int size2);
 void				ft_puttab_str(char **tab);
-size_t				ft_intlen_base(unsigned int n, int base);
+size_t				ft_intlen_base(unsigned long n, int base);
 void				ft_putnbr_base(int nb, int base);
 int					ft_atoi_base(const char *str, int str_base);
-char				*ft_itoa_base(int value, int base);
+char				*ft_itoa_base(long value, int base);
 size_t				ft_wstrlen(const wchar_t *ws);
 size_t				ft_wputstr(const wchar_t *s);
 void				ft_wputchar(wchar_t c);

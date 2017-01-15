@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/17 20:03:40 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/11 09:33:43 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/15 00:56:32 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char	*ft_strncpy(char *dest, const char *src, size_t n)
 {
 	unsigned int	i;
-
+	
 	i = 0;
 	while (i < n && src[i])
 	{

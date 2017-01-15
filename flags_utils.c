@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/07 18:33:23 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/12 17:03:23 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/14 20:06:36 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,20 +32,6 @@ char	*ft_get_flags(char *str)
 	if (!(flags = (char*)malloc(first + 1)))
 		return (NULL);
 	return (ft_strncpy(flags, str, first));
-}
-
-void	ft_print_struct(t_flags *sflags)
-{
-	printf("space is : %i\n", sflags->space);
-	printf("hashtag is : %i\n", sflags->hashtag);
-	printf("plus is : %i\n", sflags->plus);
-	printf("minus is : %i\n", sflags->minus);
-	printf("type is : %c\n", sflags->type);
-	printf("zero is : %i\n", sflags->zero);
-	printf("width is : %i\n", sflags->width);
-	printf("precision is : %i\n", sflags->precision);
-	printf("convert is : %d\n", sflags->ic);
-	printf("final convert is : %d\n", sflags->fc);
 }
 
 void	typeformat(t_flags *e)
@@ -107,6 +93,8 @@ void	ft_set_flags(t_flags *sflags, char *flags, int len)
 			sflags->plus = 1;
 		if (*flags == ' ')
 			sflags->space = 1;
+		if (*flags == '%')
+			sflags->percent = 1;
 		if (ft_isdigit(*flags) && !sflags->width)
 			sflags->width = ft_atoi(flags);
 		if (*flags == '.')

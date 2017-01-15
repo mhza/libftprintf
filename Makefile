@@ -6,13 +6,13 @@
 #    By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/18 16:29:51 by mhaziza           #+#    #+#              #
-#    Updated: 2017/01/14 15:18:13 by mhaziza          ###   ########.fr        #
+#    Updated: 2017/01/14 18:13:36 by mhaziza          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	libftprintf.a
 CC		=   @gcc
-CFLAGS	= 	-Wall -Wextra -Werror -I. -g
+CFLAGS	= 	-I. -g
 RM		=   @rm -f
 SRCS	=   ft_memset.c \
 			ft_bzero.c \
@@ -80,6 +80,7 @@ SRCS	=   ft_memset.c \
 			conv_num.c \
 			flags_utils.c \
 			ft_uitoa_b.c \
+			ft_ulitoa_b.c \
 			casting.c \
 
 OBJS	=   $(SRCS:.c=.o)

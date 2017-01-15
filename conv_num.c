@@ -6,129 +6,173 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/07 17:50:15 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/14 12:37:24 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/15 01:10:24 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_conv_num(char *param_a, t_flags *sflags)
+void	ft_if_pluspace(t_arg *arg, t_flags *flags)
 {
-	char	*final_p;
-	//char	*param_a;
-	int		p_len;
-	char	type;
+	ft_putstr("ft_if_pluspace\n");
+	char	*prefix;
 
-	// if (type == 'o')
-	// 	param_a = ft_uitoa_b(param, 8);
-	// if (type == 'x')
-	// 	param_a = ft_uitoa_b(param, 16);
-	if (sflags->type == 'X')
-		param_a = ft_toupperstr(param_a);
-	// if (ft_strchr("uidEef", type))
-	// 	param_a = type == 'u' ? ft_itoa(ABS(param)) : ft_itoa(param);
-	type = sflags->type;
-	p_len = ft_strlen(param_a);
-	if ((final_p = (char*)malloc(p_len + 2)) == NULL)
-		return (NULL);
-	if (sflags->hashtag && ft_strchr("oxX", type))
+	if (flags->plus && flags->type != 'u')
 	{
-		final_p[0] = '0';
-		if (type == 'o')
-			ft_strncpy(final_p + 1, param_a, ft_strlen(param_a));
+		prefix = ft_strnew(1);
+		ft_memset(prefix, '+', 1);
+	}
+	if (flags->space && !flags->precision)
+	{
+		prefix = ft_strnew(1);
+		ft_memset(prefix, ' ', 1);
+	}
+	arg->prefix = prefix;
+}
+
+void	ft_if_oxX(t_arg *arg, t_flags *flags)
+{ft_putstr("ft_if_oxX\n");
+	char	*prefix;
+	size_t	pre_len;
+
+	pre_len = 0;
+	if (flags->type == 'X' || flags->type == 'x')
+		pre_len = ft_strcmp(arg->param, "0") ? 0 : 2;
+	else
+		pre_len = 1;
+	prefix = ft_strnew(pre_len);
+	if (flags->hashtag)
+		prefix = ft_strncpy(prefix, "0x", pre_len);
+	if (flags->type == 'X')
+	{
+		arg->param = ft_toupperstr(arg->param);
+		prefix = ft_toupperstr(prefix);
+	}
+	arg->prefix = prefix;
+}
+
+void	ft_if_precision(t_arg *arg, t_flags *flags)
+{
+	ft_putstr("ft_if_precision\n");
+	ft_putstr("ft_strlen arg->param : ");
+	ft_putnbr(ft_strlen(arg->param));
+	ft_putstr("\n");
+
+	size_t	new_len;
+	size_t	p_len;
+	char	*tmp;
+
+	if (*arg->param == '-')
+	{
+		arg->param = arg->param + 1;
+		arg->prefix = ft_strnew(1);
+		ft_memset(arg->prefix, ' ', 1);
+	}
+	p_len = ft_strlen(arg->param);
+	new_len = (int)p_len > flags->precision ? p_len : (size_t)flags->precision;
+	if (new_len - p_len)
+	{
+		ft_putstr("arg->param : ");
+		ft_putstr(arg->param);
+		ft_putstr("\n");
+		ft_putstr("new_len : ");
+		ft_putnbr((int)new_len);
+		ft_putstr("\n");
+
+		tmp = ft_strnew(new_len);
+
+		ft_memset(tmp, '0', new_len - p_len);
+		ft_putstr("tmp : ");
+		ft_putstr(tmp);
+		ft_putstr("\n");
+
+		ft_strncat(tmp, "42", p_len);
+
+		arg->param = tmp;
+	}
+}
+
+void	ft_if_width(t_arg *arg, t_flags *flags)
+{ft_putstr("ft_if_width\n");
+	size_t	to_add;
+	size_t	cur_len;
+	size_t	pre_len;
+	char	*tmp;
+	int		is_neg;
+
+	pre_len = ft_strlen(arg->prefix);
+	cur_len = pre_len + ft_strlen(arg->param);
+	to_add = flags->width - cur_len;
+	if (to_add)
+	{
+		if (flags->minus)
+		{
+			arg->suffix = ft_strnew((size_t)to_add);
+			ft_memset(arg->suffix, ' ', (size_t)to_add);
+		}
 		else
 		{
-			final_p[1] = type;
-			ft_strncpy(final_p + 2, param_a, ft_strlen(param_a));
+			tmp = ft_strnew((size_t)to_add + pre_len);
+			if (flags->zero)
+			{
+				ft_strncpy(tmp, arg->prefix, pre_len);
+				ft_memset(tmp + pre_len, '0', to_add);
+			}
+			else
+			{
+				ft_memset(tmp, ' ', to_add);
+				ft_strncpy(tmp + to_add, arg->prefix, pre_len);
+			}
 		}
 	}
-	else if (sflags->plus && !ft_strchr("oxX", type) && !ft_strchr(param_a, '-'))
-	{
-		final_p[0] = '+';
-		ft_strncpy(final_p + 1, param_a, ft_strlen(param_a));
-	}
-	else if (sflags->space && !sflags->plus && !ft_strchr(param_a, '-') && !sflags->precision)
-	{
-		final_p[0] = ' ';
-		ft_strncpy(final_p + 1, param_a, ft_strlen(param_a));
-	}
-	else
-		ft_strncpy(final_p, param_a, ft_strlen(param_a));
-	if (sflags->precision || sflags->width)
-		return (ft_man_width(final_p, sflags));
-	else
-		return (final_p);
 }
 
-char	*ft_man_width(char *param, t_flags *sflags)
+char	*ft_conv_num(char *param, t_flags *flags)
 {
+// ft_putstr("ft_conv_num  param : ");
+// ft_putstr(param);
+// ft_putstr("\nflags->type  ");
+// ft_putchar(flags->type);
+// ft_putstr("\nflags->plus   ");
+// ft_putnbr(flags->plus);
+// ft_putstr("\nflags->space ");
+// ft_putnbr(flags->space);
+// ft_putstr("\n");
+	t_arg	*arg;
+	size_t	final_len;
+	size_t	pre_len;
+	size_t	par_len;
 	char	*final_p;
-	int		new_len;
-	int		cpy_len;
-	int		p_len;
-	int		i;
 
-	i = -1;
-	p_len = ft_strlen(param);
-	cpy_len = sflags->precision > p_len ? sflags->precision : p_len;
-	new_len = sflags->width > cpy_len ? sflags->width : cpy_len;
-	if ((final_p = (char*)malloc(new_len + 1)) == NULL)
-		return (NULL);
-	if (sflags->width > sflags->precision && sflags->precision > p_len)
-		return (ft_man_precision(param, sflags));
-	while (++i < sflags->width - cpy_len && (!sflags->minus))
-		final_p[i] = sflags->zero && !sflags->precision ? '0' : ' ';
-	ft_strncpy(final_p + i, param, cpy_len);
-	while (sflags->minus && ++i <= sflags->width - cpy_len)
-		final_p[i + cpy_len - 1] = sflags->zero && !sflags->precision ?
-		'0' : ' ';
-	if (sflags->precision)
-		return (ft_man_precision(final_p, sflags));
-	return (ft_man_minus(final_p));
-}
-
-char	*ft_man_precision(char *param, t_flags *sflags)
-{
-	int		i;
-	char	*final_p;
-	int		p_len;
-	int		new_len;
-	int		is_neg;
-
-	i = -1;
-	is_neg = ft_strchr(param, '-') ? 1 : 0;
-	p_len = ft_strlen(param);
-	new_len = sflags->precision > p_len ? sflags->precision + sflags->space :
-	p_len;
-	if ((final_p = (char*)malloc(new_len + 1)) == NULL)
-		return (NULL);
-	if (sflags->space && !++i)
-		final_p[0] = ' ';
-	if (sflags->width > sflags->precision && sflags->precision > p_len)
-	{
-		while (++i < sflags->width - sflags->precision)
-			final_p[i] = ' ';
-		i = -1;
-		while (++i < sflags->precision - p_len)
-			final_p[sflags->width - sflags->precision + i] = '0';
-		i = sflags->width - p_len - 1;
-	}
-	while (++i < sflags->precision - p_len + is_neg + sflags->space)
-		final_p[i] = '0';
-	ft_strncpy(final_p + i, param, p_len);
-	return (ft_man_minus(final_p));
-}
-
-char	*ft_man_minus(char *param)
-{
-	int		is_neg;
-
-	is_neg = ft_strchr(param, '-') ? ft_strchr(param, '-') - param : 0;
-	if (is_neg && ft_strchr(param, '0') &&
-	ft_strchr(param, '0') - param < is_neg)
-	{
-		param[is_neg] = '0';
-		param[0] = '-';
-	}
-	return (param);
+	if (!flags->hashtag && !flags->zero && !flags->minus && !flags->plus &&
+	!flags->space && !flags->width && !flags->precision)
+		return (param);
+	arg = ft_memalloc(sizeof(arg));
+	arg->param = param;
+	// ft_putstr("arg->param : ");
+	// ft_putstr(arg->param);
+	// ft_putstr("\n");
+	// ft_putstr("*arg->param : ");
+	// ft_putchar(*arg->param);
+	// ft_putstr("\n");
+	if (flags->hashtag && ft_strchr("oxX", flags->type))
+	{	//ft_putstr("hashtag && type in oxX\n");
+		ft_if_oxX(arg, flags);}
+	else if (*arg->param != '-' && (flags->plus || flags->space))
+	{	//ft_putstr("param != '-' && (flags->plus || flags->space)\n");
+		ft_if_pluspace(arg, flags);}
+	if (flags->precision)
+	{	//ft_putstr("flags->precision\n");
+		ft_if_precision(arg, flags);}
+	if (flags->width)
+	{	//ft_putstr("flags->width\n");
+		ft_if_width(arg, flags);}
+	pre_len = ft_strlen(arg->prefix);
+	par_len = ft_strlen(arg->param);
+	final_len =  pre_len + par_len + ft_strlen(arg->suffix);
+	final_p = ft_strnew(final_len);
+	ft_strncpy(final_p, arg->prefix, pre_len);
+	ft_strncpy(final_p + pre_len, arg->param, par_len);
+	ft_strncpy(final_p + pre_len + par_len, arg->suffix, ft_strlen(arg->suffix));
+	return (final_p);
 }
