@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/07 17:50:15 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/15 01:10:24 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/15 20:31:56 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	ft_if_pluspace(t_arg *arg, t_flags *flags)
 {
-	ft_putstr("ft_if_pluspace\n");
 	char	*prefix;
 
 	if (flags->plus && flags->type != 'u')
@@ -22,7 +21,7 @@ void	ft_if_pluspace(t_arg *arg, t_flags *flags)
 		prefix = ft_strnew(1);
 		ft_memset(prefix, '+', 1);
 	}
-	if (flags->space && !flags->precision)
+	if (flags->space )
 	{
 		prefix = ft_strnew(1);
 		ft_memset(prefix, ' ', 1);
@@ -31,7 +30,7 @@ void	ft_if_pluspace(t_arg *arg, t_flags *flags)
 }
 
 void	ft_if_oxX(t_arg *arg, t_flags *flags)
-{ft_putstr("ft_if_oxX\n");
+{
 	char	*prefix;
 	size_t	pre_len;
 
@@ -53,11 +52,6 @@ void	ft_if_oxX(t_arg *arg, t_flags *flags)
 
 void	ft_if_precision(t_arg *arg, t_flags *flags)
 {
-	ft_putstr("ft_if_precision\n");
-	ft_putstr("ft_strlen arg->param : ");
-	ft_putnbr(ft_strlen(arg->param));
-	ft_putstr("\n");
-
 	size_t	new_len;
 	size_t	p_len;
 	char	*tmp;
@@ -66,44 +60,37 @@ void	ft_if_precision(t_arg *arg, t_flags *flags)
 	{
 		arg->param = arg->param + 1;
 		arg->prefix = ft_strnew(1);
-		ft_memset(arg->prefix, ' ', 1);
+		ft_memset(arg->prefix, '-', 1);
 	}
 	p_len = ft_strlen(arg->param);
 	new_len = (int)p_len > flags->precision ? p_len : (size_t)flags->precision;
 	if (new_len - p_len)
 	{
-		ft_putstr("arg->param : ");
-		ft_putstr(arg->param);
-		ft_putstr("\n");
-		ft_putstr("new_len : ");
-		ft_putnbr((int)new_len);
-		ft_putstr("\n");
-
 		tmp = ft_strnew(new_len);
-
 		ft_memset(tmp, '0', new_len - p_len);
-		ft_putstr("tmp : ");
-		ft_putstr(tmp);
-		ft_putstr("\n");
-
-		ft_strncat(tmp, "42", p_len);
-
+		ft_strncat(tmp, arg->param, p_len);
 		arg->param = tmp;
 	}
 }
 
 void	ft_if_width(t_arg *arg, t_flags *flags)
-{ft_putstr("ft_if_width\n");
-	size_t	to_add;
+{
+	int	to_add;
 	size_t	cur_len;
 	size_t	pre_len;
 	char	*tmp;
 	int		is_neg;
 
+	if (*arg->param == '-')
+	{
+		arg->param = arg->param + 1;
+		arg->prefix = ft_strnew(1);
+		ft_memset(arg->prefix, '-', 1);
+	}
 	pre_len = ft_strlen(arg->prefix);
 	cur_len = pre_len + ft_strlen(arg->param);
-	to_add = flags->width - cur_len;
-	if (to_add)
+	to_add = (int)flags->width - (int)cur_len;
+	if (to_add > 0)
 	{
 		if (flags->minus)
 		{
@@ -123,50 +110,35 @@ void	ft_if_width(t_arg *arg, t_flags *flags)
 				ft_memset(tmp, ' ', to_add);
 				ft_strncpy(tmp + to_add, arg->prefix, pre_len);
 			}
+			arg->prefix = tmp;
 		}
 	}
 }
 
 char	*ft_conv_num(char *param, t_flags *flags)
 {
-// ft_putstr("ft_conv_num  param : ");
-// ft_putstr(param);
-// ft_putstr("\nflags->type  ");
-// ft_putchar(flags->type);
-// ft_putstr("\nflags->plus   ");
-// ft_putnbr(flags->plus);
-// ft_putstr("\nflags->space ");
-// ft_putnbr(flags->space);
-// ft_putstr("\n");
-	t_arg	*arg;
 	size_t	final_len;
 	size_t	pre_len;
 	size_t	par_len;
 	char	*final_p;
+	t_arg	*arg;
 
 	if (!flags->hashtag && !flags->zero && !flags->minus && !flags->plus &&
 	!flags->space && !flags->width && !flags->precision)
 		return (param);
 	arg = ft_memalloc(sizeof(arg));
+	arg->param = ft_memalloc(sizeof(char) * (ft_strlen(param) + 1));
+	arg->prefix = ft_memalloc(sizeof(char) + 1);
+	arg->suffix = ft_memalloc(sizeof(char) + 1);
 	arg->param = param;
-	// ft_putstr("arg->param : ");
-	// ft_putstr(arg->param);
-	// ft_putstr("\n");
-	// ft_putstr("*arg->param : ");
-	// ft_putchar(*arg->param);
-	// ft_putstr("\n");
 	if (flags->hashtag && ft_strchr("oxX", flags->type))
-	{	//ft_putstr("hashtag && type in oxX\n");
-		ft_if_oxX(arg, flags);}
+		ft_if_oxX(arg, flags);
 	else if (*arg->param != '-' && (flags->plus || flags->space))
-	{	//ft_putstr("param != '-' && (flags->plus || flags->space)\n");
-		ft_if_pluspace(arg, flags);}
+		ft_if_pluspace(arg, flags);
 	if (flags->precision)
-	{	//ft_putstr("flags->precision\n");
-		ft_if_precision(arg, flags);}
+		ft_if_precision(arg, flags);
 	if (flags->width)
-	{	//ft_putstr("flags->width\n");
-		ft_if_width(arg, flags);}
+		ft_if_width(arg, flags);
 	pre_len = ft_strlen(arg->prefix);
 	par_len = ft_strlen(arg->param);
 	final_len =  pre_len + par_len + ft_strlen(arg->suffix);
