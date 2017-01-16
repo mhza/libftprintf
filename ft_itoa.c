@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/21 17:58:19 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/12 16:02:08 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/16 05:49:52 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,11 @@ char	*ft_itoa(long long int n)
 {
 	size_t			size;
 	char			*nbr;
-	unsigned int	n_abs;
+	long long int	n_abs;
 	size_t			i;
 
+	if (n == -9223372036854775808)
+		return ("-9223372036854775808");
 	n_abs = n < 0 ? -n : n;
 	size = n < 0 ? ft_intlen_base(n_abs, 10) + 1 : ft_intlen_base(n_abs, 10);
 	if (!(nbr = (char*)malloc(sizeof(char) * size + 1)))

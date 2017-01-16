@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/11 09:48:57 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/16 04:01:23 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/16 06:09:58 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,15 @@
 char	*ft_cast_type(t_flags *flags, va_list ap, int base, int *tl)
 {
 	if (ft_strchr("di", flags->type))
-		return (ft_conv_num(ft_itoa(va_arg(ap, int)), flags));
+		if (flags->ic != J)
+			return (ft_conv_num(ft_itoa(va_arg(ap, int)), flags));
+		else
+			return (ft_itoa(va_arg(ap, long long)));
 	else if (ft_strchr("uoxX", flags->type))
-		return (ft_conv_num(ft_uitoa_b(va_arg(ap, wint_t), base), flags));
+		if (flags->ic != J)
+			return (ft_conv_num(ft_uitoa_b(va_arg(ap, intmax_t), base), flags));
+		else
+			return (ft_ulitoa_b(va_arg(ap, unsigned long), base));
 	else if (ft_strchr("fFeEgGaA", flags->type))
 		return (ft_conv_num(va_arg(ap, char*), flags));
 	else if (ft_strchr("S", flags->type))
@@ -79,6 +85,7 @@ char	*ft_cast_arg(t_flags *flags, va_list ap, int *tl)
 	int	base;
 
 	base = 10;
+
 	if (flags->type == 'o')
 		base = 8;
 	else if (flags->type == 'x' || flags->type == 'X')
@@ -86,7 +93,7 @@ char	*ft_cast_arg(t_flags *flags, va_list ap, int *tl)
 	else if (ft_strchr("difFeEgGaA", flags->type))
 		base = 10;
 	if ((!flags->ic && !ft_strchr("sScC", flags->type)) ||
-	ft_strchr("p", flags->type))
+	ft_strchr("p", flags->type) || flags->ic == J)
 		return (ft_cast_type(flags, ap, base, tl));
 	else if ((flags->fc >= INT && flags->fc <= WCHAR_T_PTR))
 		return (ft_cast_alpha(flags, ap, tl));

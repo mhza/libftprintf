@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/07 18:33:23 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/16 01:33:33 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/16 05:07:32 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,14 @@ void	ft_set_flags(t_flags *sflags, char *flags, int len)
 {
 	sflags->type = flags[len - 1];
 	if (sflags->type == 'U')
+	{
 		sflags->type = 'u';
+		sflags->ic = L;
+	}
 	sflags->flags = flags;
 	sflags->flags_len = ft_strlen(flags);
+	if (ft_strchr(sflags->flags, 'j'))
+		sflags->ic = J;
 	while (*flags)
 	{
 		if (*flags == '#')
@@ -95,8 +100,6 @@ void	ft_set_flags(t_flags *sflags, char *flags, int len)
 			sflags->plus = 1;
 		if (*flags == ' ')
 			sflags->space = 1;
-		if (*flags == '%')
-			sflags->percent = 1;
 		if (ft_isdigit(*flags) && !sflags->width)
 			sflags->width = ft_atoi(flags);
 		if (*flags == '.')
@@ -108,5 +111,6 @@ void	ft_set_flags(t_flags *sflags, char *flags, int len)
 			ft_special_flags(flags, sflags);
 		flags++;
 	}
-	typeformat(sflags);
+	if (sflags->ic != J)
+		typeformat(sflags);
 }

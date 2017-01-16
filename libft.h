@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/17 18:06:02 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/16 04:19:06 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/16 06:04:34 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,10 @@
 # include <wchar.h>
 
 # define U_MAX_BYTES 4
-# define LTYPES "sSpjdDioOuUxXcCgG%"
+# define LTYPES "sSpdDioOuUxXcCgG%"
 # define ABS(value)  (value > 0 ? value : -value)
+
+# define FFFFFFF "7777777"
 
 # define HH 1
 # define H 2
@@ -67,7 +69,6 @@ typedef struct	s_flags {
 	int		space;
 	int		width;
 	int		precision;
-	int		percent;
 	int		dot;
 	int		ic;
 	int		fc;
@@ -147,7 +148,8 @@ void				ft_putnbrl(int n);
 void				ft_putints(int *tab, int size);
 void				ft_puttab_int(int **tab, int size, int size2);
 void				ft_puttab_str(char **tab);
-size_t				ft_intlen_base(unsigned long n, int base);
+size_t				ft_intlen_base(long long n, int base);
+size_t				ft_uintlen_base(unsigned long n, int base);
 void				ft_putnbr_base(int nb, int base);
 int					ft_atoi_base(const char *str, int str_base);
 char				*ft_itoa_base(long value, int base);
