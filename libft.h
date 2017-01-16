@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/17 18:06:02 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/14 23:55:08 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/16 00:37:19 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ typedef struct	s_flags {
 	int		width;
 	int		precision;
 	int		percent;
+	int		dot;
 	int		ic;
 	int		fc;
 	char	type;
@@ -153,5 +154,6 @@ size_t				ft_wstrlen(const wchar_t *ws);
 size_t				ft_wputstr(const wchar_t *s);
 void				ft_wputchar(wchar_t c);
 wchar_t				*ft_wstrncpy(wchar_t *dest, const wchar_t *src, size_t n);
+char				*ft_wgetchar(wchar_t c);
 
 #endif

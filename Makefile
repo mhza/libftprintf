@@ -6,7 +6,7 @@
 #    By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/18 16:29:51 by mhaziza           #+#    #+#              #
-#    Updated: 2017/01/14 18:13:36 by mhaziza          ###   ########.fr        #
+#    Updated: 2017/01/15 21:35:49 by mhaziza          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -82,6 +82,7 @@ SRCS	=   ft_memset.c \
 			ft_uitoa_b.c \
 			ft_ulitoa_b.c \
 			casting.c \
+			ft_wgetchar.c \
 
 OBJS	=   $(SRCS:.c=.o)
 

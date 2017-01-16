@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/07 17:50:15 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/14 12:46:34 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/15 23:44:22 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,11 @@ wchar_t	*ft_conv_walpha(wchar_t *param, t_flags *sflags)
 		i++;
 	}
  	ft_wstrncpy(final_p + i, param, cpy_len);
- // 	ft_wputstr(final_p);
- // ft_putstr("\n");
+	ft_putnbr(new_len);
+ft_putstr("\n");
+  	ft_wputstr(param);
+  ft_putstr("\n");
+  ft_wputstr(final_p);
+ft_putstr("\n");
 	return (final_p);
 }

@@ -6,43 +6,45 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/07 17:50:15 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/15 20:31:56 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/16 02:09:23 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_if_pluspace(t_arg *arg, t_flags *flags)
+void	ft_if_pluspace(t_arg *arg, t_flags *f)
 {
 	char	*prefix;
 
-	if (flags->plus && flags->type != 'u')
-	{
-		prefix = ft_strnew(1);
-		ft_memset(prefix, '+', 1);
-	}
-	if (flags->space )
+	if (f->space)
 	{
 		prefix = ft_strnew(1);
 		ft_memset(prefix, ' ', 1);
 	}
+	if (f->plus && f->type != 'u')
+	{
+		prefix = ft_strnew(1);
+		ft_memset(prefix, '+', 1);
+	}
 	arg->prefix = prefix;
 }
 
-void	ft_if_oxX(t_arg *arg, t_flags *flags)
+void	ft_if_ox(t_arg *arg, t_flags *f)
 {
 	char	*prefix;
 	size_t	pre_len;
+	int		is_nul;
 
 	pre_len = 0;
-	if (flags->type == 'X' || flags->type == 'x')
-		pre_len = ft_strcmp(arg->param, "0") ? 0 : 2;
+	is_nul = ft_strcmp(arg->param, "0");
+	if (f->type == 'X' || f->type == 'x')
+		pre_len = is_nul ? 2 : 0;
 	else
 		pre_len = 1;
 	prefix = ft_strnew(pre_len);
-	if (flags->hashtag)
+	if (f->hashtag)
 		prefix = ft_strncpy(prefix, "0x", pre_len);
-	if (flags->type == 'X')
+	if (f->type == 'X')
 	{
 		arg->param = ft_toupperstr(arg->param);
 		prefix = ft_toupperstr(prefix);
@@ -50,7 +52,7 @@ void	ft_if_oxX(t_arg *arg, t_flags *flags)
 	arg->prefix = prefix;
 }
 
-void	ft_if_precision(t_arg *arg, t_flags *flags)
+void	ft_if_precision(t_arg *arg, t_flags *f)
 {
 	size_t	new_len;
 	size_t	p_len;
@@ -63,7 +65,7 @@ void	ft_if_precision(t_arg *arg, t_flags *flags)
 		ft_memset(arg->prefix, '-', 1);
 	}
 	p_len = ft_strlen(arg->param);
-	new_len = (int)p_len > flags->precision ? p_len : (size_t)flags->precision;
+	new_len = (int)p_len > f->precision ? p_len : (size_t)f->precision;
 	if (new_len - p_len)
 	{
 		tmp = ft_strnew(new_len);
@@ -73,9 +75,9 @@ void	ft_if_precision(t_arg *arg, t_flags *flags)
 	}
 }
 
-void	ft_if_width(t_arg *arg, t_flags *flags)
+void	ft_if_width(t_arg *arg, t_flags *f)
 {
-	int	to_add;
+	int		to_add;
 	size_t	cur_len;
 	size_t	pre_len;
 	char	*tmp;
@@ -89,10 +91,10 @@ void	ft_if_width(t_arg *arg, t_flags *flags)
 	}
 	pre_len = ft_strlen(arg->prefix);
 	cur_len = pre_len + ft_strlen(arg->param);
-	to_add = (int)flags->width - (int)cur_len;
+	to_add = (int)f->width - (int)cur_len;
 	if (to_add > 0)
 	{
-		if (flags->minus)
+		if (f->minus)
 		{
 			arg->suffix = ft_strnew((size_t)to_add);
 			ft_memset(arg->suffix, ' ', (size_t)to_add);
@@ -100,7 +102,7 @@ void	ft_if_width(t_arg *arg, t_flags *flags)
 		else
 		{
 			tmp = ft_strnew((size_t)to_add + pre_len);
-			if (flags->zero)
+			if (f->zero && !f->precision)
 			{
 				ft_strncpy(tmp, arg->prefix, pre_len);
 				ft_memset(tmp + pre_len, '0', to_add);
@@ -115,36 +117,39 @@ void	ft_if_width(t_arg *arg, t_flags *flags)
 	}
 }
 
-char	*ft_conv_num(char *param, t_flags *flags)
+char	*ft_conv_num(char *param, t_flags *f)
 {
 	size_t	final_len;
 	size_t	pre_len;
-	size_t	par_len;
+	size_t	p_len;
 	char	*final_p;
 	t_arg	*arg;
 
-	if (!flags->hashtag && !flags->zero && !flags->minus && !flags->plus &&
-	!flags->space && !flags->width && !flags->precision)
+	if (!ft_strchr("oxX", f->type) && !f->hashtag && !f->zero && !f->dot &&
+	!f->minus && !f->plus && !f->space && !f->width && !f->precision)
 		return (param);
 	arg = ft_memalloc(sizeof(arg));
 	arg->param = ft_memalloc(sizeof(char) * (ft_strlen(param) + 1));
 	arg->prefix = ft_memalloc(sizeof(char) + 1);
 	arg->suffix = ft_memalloc(sizeof(char) + 1);
 	arg->param = param;
-	if (flags->hashtag && ft_strchr("oxX", flags->type))
-		ft_if_oxX(arg, flags);
-	else if (*arg->param != '-' && (flags->plus || flags->space))
-		ft_if_pluspace(arg, flags);
-	if (flags->precision)
-		ft_if_precision(arg, flags);
-	if (flags->width)
-		ft_if_width(arg, flags);
+	if (ft_strchr("oxX", f->type))
+		ft_if_ox(arg, f);
+	else if (*arg->param != '-' && f->type != 'u' && (f->plus || f->space))
+		ft_if_pluspace(arg, f);
+	if (f->precision)
+		ft_if_precision(arg, f);
+	if (!ft_strcmp(arg->param, "0") && f->dot && !f->precision &&
+	(!f->fc || f->fc == U_INT))
+		arg->param = "";
+	if (f->width)
+		ft_if_width(arg, f);
 	pre_len = ft_strlen(arg->prefix);
-	par_len = ft_strlen(arg->param);
-	final_len =  pre_len + par_len + ft_strlen(arg->suffix);
+	p_len = ft_strlen(arg->param);
+	final_len = pre_len + p_len + ft_strlen(arg->suffix);
 	final_p = ft_strnew(final_len);
 	ft_strncpy(final_p, arg->prefix, pre_len);
-	ft_strncpy(final_p + pre_len, arg->param, par_len);
-	ft_strncpy(final_p + pre_len + par_len, arg->suffix, ft_strlen(arg->suffix));
+	ft_strncpy(final_p + pre_len, arg->param, p_len);
+	ft_strncpy(final_p + pre_len + p_len, arg->suffix, ft_strlen(arg->suffix));
 	return (final_p);
 }

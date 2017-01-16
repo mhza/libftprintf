@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/11 09:48:57 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/14 19:00:17 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/16 01:29:45 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,14 @@ char	*ft_cast_alpha(t_flags *flags, va_list ap, int *tl)
 char	*ft_cast_digit(t_flags *flags, va_list ap)
 {
 	if (flags->fc == S_CHAR)
-		return (ft_conv_num(ft_itoa(va_arg(ap, int)), flags));
+		return (ft_conv_num(ft_itoa((signed char)va_arg(ap, int)), flags));
 	else if (flags->fc == SHORT_I)
-		return (ft_conv_num(ft_itoa(va_arg(ap, int)), flags));
-	else if (flags->fc == U_LONG_I)
-		return (ft_conv_num(ft_itoa(va_arg(ap, long)), flags));
-	else if (flags->fc == U_LONG_LONG_I)
-		return (ft_conv_num(ft_itoa(va_arg(ap, long)), flags));
-	else if (flags->fc == U_INTMAX_T)
+		return (ft_conv_num(ft_itoa((short int)va_arg(ap, int)), flags));
+	else if (flags->fc == LONG_I)
+		return (ft_conv_num(ft_itoa(va_arg(ap, long int)), flags));
+	else if (flags->fc == LONG_LONG_I)
+		return (ft_conv_num(ft_itoa(va_arg(ap, long long)), flags));
+	else if (flags->fc == INTMAX_T)
 		return (ft_conv_num(ft_itoa((long)va_arg(ap, uintmax_t)), flags));
 	return (NULL);
 }

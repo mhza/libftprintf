@@ -1,60 +1,56 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_wputchar.c                                      :+:      :+:    :+:   */
+/*   ft_wgetchar.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/08 18:48:09 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/15 21:25:18 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/15 22:21:50 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static void	ft_putwchar2(wchar_t c)
+static void	ft_wgetchar2(wchar_t c, char *wstr)
 {
 	static unsigned short	mask[] = {128, 192, 224, 240, 63};
-	unsigned char			byte;
-
-	byte = 0;
 	if (c <= ft_atoi_base("FFFF", 16))
 	{
-		byte = mask[2] + (c >> 12);
-		write(1, &byte, 1);
-		byte = mask[0] + ((c >> 6) & mask[4]);
-		write(1, &byte, 1);
-		byte = mask[0] + (c & mask[4]);
-		write(1, &byte, 1);
+		wstr[0] = mask[2] + (c >> 12);
+		wstr[1] = mask[0] + ((c >> 6) & mask[4]);
+		wstr[2] = mask[0] + (c & mask[4]);
+		wstr[3] = '\0';
 	}
 	else if (c <= ft_atoi_base("10FFFF", 16))
 	{
-		byte = mask[3] + (c >> 18);
-		write(1, &byte, 1);
-		byte = mask[0] + ((c >> 12) & mask[4]);
-		write(1, &byte, 1);
-		byte = mask[0] + ((c >> 6) & mask[4]);
-		write(1, &byte, 1);
-		byte = mask[0] + (c & mask[4]);
-		write(1, &byte, 1);
+		wstr[0] = mask[3] + (c >> 18);
+		wstr[1] = mask[0] + ((c >> 12) & mask[4]);
+		wstr[2] = mask[0] + ((c >> 6) & mask[4]);
+		wstr[3] = mask[0] + (c & mask[4]);
+		wstr[4] = '\0';
 	}
 }
 
-void		ft_wputchar(wchar_t c)
+char		*ft_wgetchar(wchar_t c)
 {
 	static unsigned short	mask[] = {128, 192, 224, 240, 63};
-	unsigned char			byte;
+	char					*wstr;
 
-	byte = 0;
+	if (!(wstr = ft_strnew(4)))
+		return (NULL);
 	if (c <= ft_atoi_base("7F", 16))
-		write(1, &c, 1);
+	{
+		wstr[0] = c;
+		wstr[1] = '\0';
+	}
 	else if (c <= ft_atoi_base("7FF", 16))
 	{
-		byte = mask[1] + (c >> 6);
-		write(1, &byte, 1);
-		byte = mask[0] + (c & mask[4]);
-		write(1, &byte, 1);
+		wstr[0] = mask[1] + (c >> 6);
+		wstr[1] = mask[0] + (c & mask[4]);
+		wstr[2] = '\0';
 	}
 	else if (c > ft_atoi_base("U+DFFF", 16) && c <= ft_atoi_base("10FFFF", 16))
-		ft_putwchar2(c);
+		ft_wgetchar2(c, wstr);
+	return (wstr);
 }

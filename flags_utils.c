@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/07 18:33:23 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/14 20:06:36 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/16 01:33:33 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ void	ft_special_flags(char *str, t_flags *sflags)
 void	ft_set_flags(t_flags *sflags, char *flags, int len)
 {
 	sflags->type = flags[len - 1];
+	if (sflags->type == 'U')
+		sflags->type = 'u';
 	sflags->flags = flags;
 	sflags->flags_len = ft_strlen(flags);
 	while (*flags)
@@ -98,8 +100,12 @@ void	ft_set_flags(t_flags *sflags, char *flags, int len)
 		if (ft_isdigit(*flags) && !sflags->width)
 			sflags->width = ft_atoi(flags);
 		if (*flags == '.')
+		{
+			sflags->dot = 1;
 			sflags->precision = ft_atoi(++flags);
-		ft_special_flags(flags, sflags);
+		}
+		if (!sflags->ic)
+			ft_special_flags(flags, sflags);
 		flags++;
 	}
 	typeformat(sflags);
