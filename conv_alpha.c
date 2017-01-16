@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/07 17:50:15 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/15 23:44:22 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/16 03:46:31 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,24 +30,32 @@ char	*ft_conv_alpha(char *param, t_flags *sflags)
 	int		cpy_len;
 	int		p_len;
 	int		i;
-// 	ft_putstr("ft_conv_alpha ");
-// 	ft_putstr(param);
-// ft_putstr("\n");
-	p_len = ft_strlen(param);
-	cpy_len = sflags->precision && sflags->precision < p_len ?
-	sflags->precision : p_len;
+
+	if (!param)
+	{
+		final_p = ft_strnew(6);
+		final_p = "(null)";
+		return (final_p);
+	}
+	p_len = (int)ft_strlen(param);
+	cpy_len = sflags->precision && sflags->precision < p_len ? sflags->precision : p_len;
 	new_len = sflags->width > cpy_len ? sflags->width : cpy_len;
 	if (sflags->plus || sflags->space || sflags->zero || sflags->hashtag)
 		return (NULL);
-	if ((final_p = (char*)malloc(new_len)) == NULL)
+	if ((final_p = ft_strnew((size_t)new_len)) == NULL)
 		return (NULL);
 	i = 0;
-	while (new_len > cpy_len && i + 1 < sflags->width  && !sflags->minus)
+	while (!sflags->minus && new_len > cpy_len && i < sflags->width - cpy_len)
 	{
 		final_p[i] = ' ';
 		i++;
 	}
-	ft_strncpy(final_p + i, param, cpy_len);
+	 ft_strncpy(final_p + i, param, cpy_len);
+	while (sflags->minus && new_len > cpy_len && i < sflags->width - cpy_len)
+	{
+		final_p[cpy_len + i] = ' ';
+		i++;
+	}
 	return (final_p);
 }
 
