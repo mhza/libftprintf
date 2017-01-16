@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/07 17:50:15 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/16 03:46:31 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/16 04:23:27 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,9 @@ char	*ft_conv_alpha(char *param, t_flags *sflags)
 		return (final_p);
 	}
 	p_len = (int)ft_strlen(param);
-	cpy_len = sflags->precision && sflags->precision < p_len ? sflags->precision : p_len;
+
+	cpy_len = sflags->precision && sflags->precision < p_len ? sflags->precision
+	: p_len;
 	new_len = sflags->width > cpy_len ? sflags->width : cpy_len;
 	if (sflags->plus || sflags->space || sflags->zero || sflags->hashtag)
 		return (NULL);
@@ -50,11 +52,17 @@ char	*ft_conv_alpha(char *param, t_flags *sflags)
 		final_p[i] = ' ';
 		i++;
 	}
-	 ft_strncpy(final_p + i, param, cpy_len);
+	ft_strncpy(final_p + i, param, cpy_len);
 	while (sflags->minus && new_len > cpy_len && i < sflags->width - cpy_len)
 	{
 		final_p[cpy_len + i] = ' ';
 		i++;
+	}
+	if (sflags->type == 'c' && !p_len && new_len > 1)
+	{
+		if (sflags->width > 1)
+			sflags->emptyc = 1;
+		return (final_p + 1);
 	}
 	return (final_p);
 }

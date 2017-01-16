@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/17 18:06:02 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/16 00:37:19 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/16 04:19:06 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ typedef struct	s_flags {
 	int		ic;
 	int		fc;
 	char	type;
+	int		emptyc;
 	char	*flags;
 	int		flags_len;
 }				t_flags;

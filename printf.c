@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/06 13:45:32 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/14 17:25:00 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/16 04:23:49 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,13 @@ char	*ft_print_params(char *str, t_flags *sflags, va_list ap, int *tl)
 {
 	char	type;
 	char	*param;
-
+	int		i;
 	type = sflags->type;
 	param = ft_cast_arg(sflags, ap, tl);
 	if (param && !ft_strchr("SC", type))
 		*tl += ft_putstr(param);
+	if ((!ft_strlen(param) || sflags->emptyc) && sflags->type == 'c')
+		*tl += 1;
 	return (str + sflags->flags_len + 1);
 }
 
