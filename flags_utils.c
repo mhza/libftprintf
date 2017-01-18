@@ -6,11 +6,28 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/07 18:33:23 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/16 05:07:32 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/18 19:37:25 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+//
+// int		ft_check_flags(char *flags, int conv, int dot)
+// {
+// 	if (flags[0] && ft_isdigit(flags[0]))
+// 		return (ft_check_flags(flags + 1, conv, dot));
+// 	if (flags[0] && flags[0] == '.' && !dot)
+// 		return (ft_check_flags(flags + 1, conv, 1));
+// 	if (flags[0] && !conv && (ft_strchr("zj", flags[0]) || ft_isdigit(flags[0])))
+// 		return (ft_check_flags(flags + 1, 1, dot));
+// 	if (flags[0] && !conv && flags[1] && ft_strchr("hl", flags[0]) && flags[1] == flags[0])
+// 		return (ft_check_flags(flags + 2, 1, dot));
+// 	if (flags[0] && !conv && flags[1] && ft_strchr("hl", flags[0]) && flags[1] != flags[0])
+// 		return (ft_check_flags(flags + 1, 1, dot));
+// 	if (flags[0] && ft_strchr("sSpdDioOuUxXcCgG", flags[0]) && !flags[1])
+// 		return (1);
+// 	return (0);
+// }
 
 char	*ft_get_flags(char *str)
 {
@@ -45,11 +62,17 @@ void	typeformat(t_flags *e)
 	if (e->type == 'c' && e->ic == 0)
 		e->fc = INT;
 	if ((e->type == 'c' && e->ic == 3) || e->type == 'C')
-		e->fc = WINT_T;
+		{
+			e->type = 'C';
+			e->fc = WINT_T;
+		}
 	if (e->type == 's' && e->ic == 0)
 		e->fc = CHAR_PTR;
 	if ((e->type == 's' && e->ic == 3) || e->type == 'S')
-		e->fc = WCHAR_T_PTR;
+		{
+			e->type = 'S';
+			e->fc = WCHAR_T_PTR;
+		}
 	if (e->type == 'p' && e->ic == 0)
 		e->fc = VOID_PTR;
 }
@@ -84,6 +107,16 @@ void	ft_set_flags(t_flags *sflags, char *flags, int len)
 		sflags->type = 'u';
 		sflags->ic = L;
 	}
+	if (sflags->type == 'D')
+	{
+		sflags->type = 'd';
+		sflags->ic = L;
+	}
+	if (sflags->type == 'O')
+	{
+		sflags->type = 'o';
+		sflags->ic = L;
+	}
 	sflags->flags = flags;
 	sflags->flags_len = ft_strlen(flags);
 	if (ft_strchr(sflags->flags, 'j'))
@@ -101,7 +134,7 @@ void	ft_set_flags(t_flags *sflags, char *flags, int len)
 		if (*flags == ' ')
 			sflags->space = 1;
 		if (ft_isdigit(*flags) && !sflags->width)
-			sflags->width = ft_atoi(flags);
+			sflags->width = ft_atoi(flags) > 0 ? ft_atoi(flags) : 0;
 		if (*flags == '.')
 		{
 			sflags->dot = 1;

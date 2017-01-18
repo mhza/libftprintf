@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/07 17:50:15 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/16 04:23:27 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/18 21:07:34 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,11 @@ wchar_t	*ft_conv_walpha(wchar_t *param, t_flags *sflags)
 	int		cpy_len;
 	int		p_len;
 	int		i;
-// 	ft_putstr("ft_conv_walpha ");
-// 	ft_wputstr(param);
-// ft_putstr("\n");
+
+	if (!param)
+		return (NULL);
 	p_len = ft_wstrlen(param);
+	sflags->precision /= 4;
 	cpy_len = sflags->precision && sflags->precision < p_len ?
 	sflags->precision : p_len;
 	new_len = sflags->width > cpy_len ? sflags->width : cpy_len;
@@ -102,12 +103,6 @@ wchar_t	*ft_conv_walpha(wchar_t *param, t_flags *sflags)
 		final_p[i] = ' ';
 		i++;
 	}
- 	ft_wstrncpy(final_p + i, param, cpy_len);
-	ft_putnbr(new_len);
-ft_putstr("\n");
-  	ft_wputstr(param);
-  ft_putstr("\n");
-  ft_wputstr(final_p);
-ft_putstr("\n");
+	ft_wstrncpy(final_p + i, param, cpy_len);
 	return (final_p);
 }

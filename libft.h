@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/17 18:06:02 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/16 06:04:34 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/18 21:20:03 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,9 @@ char			*ft_conv_num(char *param, t_flags *sflags);
 void			ft_special_flags(char *str, t_flags *sflags);
 void			ft_set_flags(t_flags *sflags, char *flags, int len);
 char			*ft_get_flags(char *str);
+// int				ft_check_flags(char *flags, int conv, int dot);
 char			*ft_uitoa_b(unsigned int value, int base);
-char			*ft_ulitoa_b(unsigned long value, int base);
+char			*ft_ulitoa_b(uintmax_t value, int base);
 char			*ft_man_width(char *param, t_flags *sflags);
 char			*ft_man_precision(char *param, t_flags *sflags);
 char			*ft_man_minus(char *param);
@@ -155,7 +156,7 @@ int					ft_atoi_base(const char *str, int str_base);
 char				*ft_itoa_base(long value, int base);
 size_t				ft_wstrlen(const wchar_t *ws);
 size_t				ft_wputstr(const wchar_t *s);
-void				ft_wputchar(wchar_t c);
+int					ft_wputchar(wchar_t c);
 wchar_t				*ft_wstrncpy(wchar_t *dest, const wchar_t *src, size_t n);
 char				*ft_wgetchar(wchar_t c);
 

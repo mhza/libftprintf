@@ -6,13 +6,13 @@
 #    By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/18 16:29:51 by mhaziza           #+#    #+#              #
-#    Updated: 2017/01/15 21:35:49 by mhaziza          ###   ########.fr        #
+#    Updated: 2017/01/18 14:52:56 by mhaziza          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	libftprintf.a
 CC		=   @gcc
-CFLAGS	= 	-I. -g
+CFLAGS	= -I. -g
 RM		=   @rm -f
 SRCS	=   ft_memset.c \
 			ft_bzero.c \

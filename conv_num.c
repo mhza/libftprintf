@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/07 17:50:15 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/16 05:50:21 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/18 18:01:05 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,12 @@ void	ft_if_ox(t_arg *arg, t_flags *f)
 
 	pre_len = 0;
 	is_nul = ft_strcmp(arg->param, "0");
-	if (f->type == 'X' || f->type == 'x')
-		pre_len = is_nul ? 2 : 0;
+	if (f->type == 'X' || f->type == 'x' || f->type == 'p')
+		pre_len = is_nul || f->type == 'p' ? 2 : 0;
 	else
 		pre_len = 1;
 	prefix = ft_strnew(pre_len);
-	if (f->hashtag)
+	if (f->hashtag || f->type == 'p')
 		prefix = ft_strncpy(prefix, "0x", pre_len);
 	if (f->type == 'X')
 	{
@@ -81,7 +81,6 @@ void	ft_if_width(t_arg *arg, t_flags *f)
 	size_t	cur_len;
 	size_t	pre_len;
 	char	*tmp;
-	int		is_neg;
 
 	if (*arg->param == '-')
 	{
@@ -125,7 +124,7 @@ char	*ft_conv_num(char *param, t_flags *f)
 	char	*final_p;
 	t_arg	*arg;
 
-	if (!ft_strchr("oxX", f->type) && !f->hashtag && !f->zero && !f->dot &&
+	if (!ft_strchr("poxX", f->type) && !f->hashtag && !f->zero && !f->dot &&
 	!f->minus && !f->plus && !f->space && !f->width && !f->precision)
 		return (param);
 	arg = ft_memalloc(sizeof(arg));
@@ -133,7 +132,7 @@ char	*ft_conv_num(char *param, t_flags *f)
 	arg->prefix = ft_memalloc(sizeof(char) + 1);
 	arg->suffix = ft_memalloc(sizeof(char) + 1);
 	arg->param = param;
-	if (ft_strchr("oxX", f->type))
+	if (ft_strchr("poxX", f->type))
 		ft_if_ox(arg, f);
 	else if (*arg->param != '-' && f->type != 'u' && (f->plus || f->space))
 		ft_if_pluspace(arg, f);

@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/21 18:15:06 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/14 12:05:16 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/18 21:08:20 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,19 @@
 
 size_t	ft_wputstr(const wchar_t *s)
 {
-	int i;
+	int	i;
+	int	total_length;
 
 	i = -1;
+	total_length = 0;
 	if (!s)
-		return (0);
+		return (ft_putstr("(null)"));
+	else if (s && !ft_wstrlen(s))
+		return (1);
 	else
 	{
 		while (++i < (int)ft_wstrlen(s))
-			ft_wputchar(s[i]);
-		return (ft_wstrlen(s));
+			total_length += ft_wputchar(s[i]);
+		return (total_length);
 	}
 }

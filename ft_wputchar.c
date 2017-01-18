@@ -6,13 +6,13 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/08 18:48:09 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/15 21:25:18 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/18 19:12:21 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static void	ft_putwchar2(wchar_t c)
+static int	ft_putwchar2(wchar_t c)
 {
 	static unsigned short	mask[] = {128, 192, 224, 240, 63};
 	unsigned char			byte;
@@ -26,6 +26,7 @@ static void	ft_putwchar2(wchar_t c)
 		write(1, &byte, 1);
 		byte = mask[0] + (c & mask[4]);
 		write(1, &byte, 1);
+		return (3);
 	}
 	else if (c <= ft_atoi_base("10FFFF", 16))
 	{
@@ -37,24 +38,33 @@ static void	ft_putwchar2(wchar_t c)
 		write(1, &byte, 1);
 		byte = mask[0] + (c & mask[4]);
 		write(1, &byte, 1);
+		return (4);
 	}
+	return (0);
 }
 
-void		ft_wputchar(wchar_t c)
+int		ft_wputchar(wchar_t c)
 {
 	static unsigned short	mask[] = {128, 192, 224, 240, 63};
 	unsigned char			byte;
 
+	if (c >= ft_atoi_base("D800", 16) && c <= ft_atoi_base("DFFF", 16))
+		return (0);
 	byte = 0;
 	if (c <= ft_atoi_base("7F", 16))
+	{
 		write(1, &c, 1);
+		return (1);
+	}
 	else if (c <= ft_atoi_base("7FF", 16))
 	{
 		byte = mask[1] + (c >> 6);
 		write(1, &byte, 1);
 		byte = mask[0] + (c & mask[4]);
 		write(1, &byte, 1);
+		return (2);
 	}
-	else if (c > ft_atoi_base("U+DFFF", 16) && c <= ft_atoi_base("10FFFF", 16))
-		ft_putwchar2(c);
+	else if (c <= ft_atoi_base("10FFFF", 16))
+		return (ft_putwchar2(c));
+	return (0);
 }
