@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/07 17:50:15 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/19 18:32:27 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/19 22:08:53 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	*ft_conv_alpha(char *param, t_flags *sflags)
 		return (final_p);
 	}
 	p_len = ft_strlen(param);
-	cpy_len = sflags->precision && sflags->precision < p_len ? sflags->precision
+	cpy_len = sflags->dot && sflags->precision < p_len ? sflags->precision
 	: p_len;
 	new_len = sflags->width > cpy_len ? sflags->width : cpy_len;
 
@@ -82,7 +82,50 @@ char	*ft_conv_alpha(char *param, t_flags *sflags)
 	}
 	return (final_p);
 }
+int		ft_get_nb_wchar(wchar_t *src, int n)
+{
+	unsigned int	i;
+	unsigned int	ibytes;
 
+	i = 0;
+	ibytes = 0;
+	while (ibytes < n && src[i])
+	{
+		if (src[i] <= ft_atoi_base("7F", 16) && ibytes + 1 <= n)
+			ibytes+=1;
+		else if (src[i] <= ft_atoi_base("7FF", 16) && ibytes + 2 <= n)
+			ibytes+=2;
+		else if (src[i] <= ft_atoi_base("FFFF", 16) && ibytes + 3 <= n)
+			ibytes+=3;
+		else if (src[i] <= ft_atoi_base("10FFFF", 16) && ibytes + 4 <= n)
+			ibytes+=4;
+		else
+			return (i);
+		i++;
+	}
+	return (i);
+}
+int		ft_get_nb_bytes(wchar_t *src, int n)
+{
+	unsigned int	i;
+	unsigned int	ibytes;
+
+	i = 0;
+	ibytes = 0;
+	while (i < n && src[i])
+	{
+		if (src[i] <= ft_atoi_base("7F", 16))
+			ibytes+=1;
+		else if (src[i] <= ft_atoi_base("7FF", 16))
+			ibytes+=2;
+		else if (src[i] <= ft_atoi_base("FFFF", 16))
+			ibytes+=3;
+		else if (src[i] <= ft_atoi_base("10FFFF", 16))
+			ibytes+=4;
+		i++;
+	}
+	return (ibytes);
+}
 wchar_t	*ft_conv_walpha(wchar_t *param, t_flags *sflags)
 {
 	wchar_t	*final_p;
@@ -93,9 +136,12 @@ wchar_t	*ft_conv_walpha(wchar_t *param, t_flags *sflags)
 
 	if (!param)
 		return (NULL);
-	p_len = ft_wbyteslen(param);
-	cpy_len = sflags->precision && sflags->precision < p_len ?
-	sflags->precision : p_len;
+	if (sflags->dot)
+		cpy_len = ft_get_nb_wchar(param, sflags->precision);
+	else
+		cpy_len = ft_wbyteslen(param);
+	p_len = ft_get_nb_bytes(param, cpy_len);
+
 	new_len = sflags->width > cpy_len ? sflags->width : cpy_len;
 	// ft_putstr(" p_len = ");ft_putnbr(p_len);ft_putstr("\n");
 	// ft_putstr(" new_len = ");ft_putnbr(new_len);ft_putstr("\n");
@@ -108,18 +154,17 @@ wchar_t	*ft_conv_walpha(wchar_t *param, t_flags *sflags)
 	if ((final_p = (wchar_t*)malloc(sizeof(final_p) * new_len)) == NULL)
 		return (NULL);
 	i = 0;
-	while (!sflags->minus && new_len > cpy_len && i < sflags->width - cpy_len)
+	while (!sflags->minus && new_len > cpy_len && i < sflags->width - p_len)
 	{
 		final_p[i] = sflags->zero ? '0' : ' ';
 		i++;
 	}
-	if (cpy_len)
+	if (cpy_len || (sflags->type == 'S' && (sflags->dot || sflags->width)))
 	{
-		if (!sflags->precision)
+		// if (!sflags->precision && !sflags->width)
 			ft_wstrncpy(final_p + i, param, cpy_len);
-		else
-			ft_wstrncpyp(final_p + i, param, cpy_len);
-
+		// else
+		// 	ft_wstrncpyp(final_p + i, param, cpy_len);
 	}
 	else
 	{
