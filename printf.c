@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/06 13:45:32 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/19 16:43:07 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/19 17:40:12 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,10 @@ char	*ft_print_params(char *str, t_flags *sflags, va_list ap, int *tl)
 	{
 		if (sflags->minus)
 			write(1, "\0", 1);
-		*tl += ft_putstr(param) + 1;
+		if (sflags->width)
+			*tl += ft_putstr(param) + 1;
+		else
+			*tl += 1;
 		if (!sflags->minus)
 			write(1, "\0", 1);
 	}

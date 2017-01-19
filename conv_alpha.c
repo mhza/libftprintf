@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/07 17:50:15 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/19 17:15:16 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/19 17:23:29 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,14 @@ char	*ft_conv_alpha(char *param, t_flags *sflags)
 	// ft_putstr(" minus = ");ft_putnbr(sflags->minus);ft_putstr("\n");
 	// ft_putstr(" width = ");ft_putnbr(sflags->width);ft_putstr("\n");
 	// ft_putstr(" cpy_len = ");ft_putnbr(cpy_len);ft_putstr("\n");
-	if (sflags->type != '%' && (sflags->plus || sflags->space || sflags->zero || sflags->hashtag))
+	if (sflags->type != '%' && (sflags->plus || sflags->space || sflags->hashtag))
 		return (NULL);
 	if ((final_p = ft_strnew((size_t)new_len)) == NULL)
 		return (NULL);
 	i = 0;
 	while (!sflags->minus && new_len > cpy_len && i < sflags->width - cpy_len)
 	{
-		final_p[i] = ' ';
+		final_p[i] = sflags->zero ? '0' : ' ';
 		i++;
 	}
 	ft_strncpy(final_p + i, param, cpy_len);
@@ -103,14 +103,14 @@ wchar_t	*ft_conv_walpha(wchar_t *param, t_flags *sflags)
 	// ft_putstr(" precision = ");ft_putnbr(sflags->precision);ft_putstr("\n");
 	// ft_putstr(" width = ");ft_putnbr(sflags->width);ft_putstr("\n");
 	// ft_putstr(" cpy_len = ");ft_putnbr(cpy_len);ft_putstr("\n");
-	if (sflags->plus || sflags->space || sflags->zero || sflags->hashtag)
+	if (sflags->plus || sflags->space || sflags->hashtag)
 		return (NULL);
 	if ((final_p = (wchar_t*)malloc(sizeof(final_p) * new_len)) == NULL)
 		return (NULL);
 	i = 0;
 	while (!sflags->minus && new_len > cpy_len && i < sflags->width - cpy_len)
 	{
-		final_p[i] = ' ';
+		final_p[i] = sflags->zero ? '0' : ' ';
 		i++;
 	}
 	if (cpy_len)

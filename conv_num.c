@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/07 17:50:15 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/18 18:01:05 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/19 17:35:42 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@ void	ft_if_ox(t_arg *arg, t_flags *f)
 	int		is_nul;
 
 	pre_len = 0;
-	is_nul = ft_strcmp(arg->param, "0");
+	is_nul = !ft_strcmp(arg->param, "0");
 	if (f->type == 'X' || f->type == 'x' || f->type == 'p')
-		pre_len = is_nul || f->type == 'p' ? 2 : 0;
+		pre_len = !is_nul || f->type == 'p' ? 2 : 0;
 	else
-		pre_len = 1;
+		pre_len = is_nul ? 0 : 1;
 	prefix = ft_strnew(pre_len);
 	if (f->hashtag || f->type == 'p')
 		prefix = ft_strncpy(prefix, "0x", pre_len);
