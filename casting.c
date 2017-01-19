@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/11 09:48:57 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/19 15:17:18 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/19 17:48:29 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ char	*ft_cast_type(t_flags *flags, va_list ap, int base, int *tl)
 	else if (ft_strchr("C", flags->type))
 	{
 		tmp = *tl;
-		*tl += ft_wputstr(ft_wctoa(va_arg(ap, wint_t)));
+		//if (!flags->emptyc)
+			*tl += ft_wputstr(ft_wctoa(va_arg(ap, wint_t)));
 		*tl = tmp == *tl ? *tl + 1 : *tl;
 	}
 	return (NULL);
@@ -58,7 +59,8 @@ char	*ft_cast_alpha(t_flags *flags, va_list ap, int *tl)
 	else if (flags->fc == WINT_T || flags->type == 'C')
 	{
 		tmp = *tl;
-		*tl += ft_wputstr(ft_conv_walpha(ft_wctoa(va_arg(ap, wchar_t)), flags));
+		//if (!flags->emptyc)
+			*tl += ft_wputstr(ft_conv_walpha(ft_wctoa(va_arg(ap, wchar_t)), flags));
 		*tl = tmp == *tl ? *tl + 1 : *tl;
 	}
 	return (NULL);
