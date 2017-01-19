@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/17 18:06:02 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/18 21:20:03 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/19 11:31:20 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <wchar.h>
 
 # define U_MAX_BYTES 4
-# define LTYPES "sSpdDioOuUxXcCgG%"
+# define LTYPES "sSpdDioOuUxXcC%"
 # define ABS(value)  (value > 0 ? value : -value)
 
 # define FFFFFFF "7777777"
@@ -69,6 +69,8 @@ typedef struct	s_flags {
 	int		space;
 	int		width;
 	int		precision;
+	int		percent;
+	int		is_invalid;
 	int		dot;
 	int		ic;
 	int		fc;
@@ -81,9 +83,8 @@ typedef struct	s_flags {
 int				ft_printf(char *str, ...);
 char			*ft_conv_num(char *param, t_flags *sflags);
 void			ft_special_flags(char *str, t_flags *sflags);
-void			ft_set_flags(t_flags *sflags, char *flags, int len);
+int				ft_set_flags(t_flags *sflags, char *flags, int len);
 char			*ft_get_flags(char *str);
-// int				ft_check_flags(char *flags, int conv, int dot);
 char			*ft_uitoa_b(unsigned int value, int base);
 char			*ft_ulitoa_b(uintmax_t value, int base);
 char			*ft_man_width(char *param, t_flags *sflags);

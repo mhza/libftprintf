@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/08 18:48:09 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/18 19:12:21 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/19 15:07:01 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ int		ft_wputchar(wchar_t c)
 
 	if (c >= ft_atoi_base("D800", 16) && c <= ft_atoi_base("DFFF", 16))
 		return (0);
+	if (!c)
+		return (1);
 	byte = 0;
 	if (c <= ft_atoi_base("7F", 16))
 	{
