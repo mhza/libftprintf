@@ -6,7 +6,7 @@
 #    By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/18 16:29:51 by mhaziza           #+#    #+#              #
-#    Updated: 2017/01/18 14:52:56 by mhaziza          ###   ########.fr        #
+#    Updated: 2017/01/19 17:00:22 by mhaziza          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,6 +74,7 @@ SRCS	=   ft_memset.c \
 			ft_wputchar.c \
 			ft_wputstr.c \
 			ft_wstrlen.c \
+			ft_wbyteslen.c \
 			ft_wstrncpy.c \
 			printf.c \
 			conv_alpha.c \

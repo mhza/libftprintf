@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/07 17:50:15 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/19 16:41:06 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/19 17:15:16 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,13 +93,14 @@ wchar_t	*ft_conv_walpha(wchar_t *param, t_flags *sflags)
 
 	if (!param)
 		return (NULL);
-	p_len = ft_wstrlen(param);
+	p_len = ft_wbyteslen(param);
 	cpy_len = sflags->precision && sflags->precision < p_len ?
 	sflags->precision : p_len;
 	new_len = sflags->width > cpy_len ? sflags->width : cpy_len;
 	// ft_putstr(" p_len = ");ft_putnbr(p_len);ft_putstr("\n");
 	// ft_putstr(" new_len = ");ft_putnbr(new_len);ft_putstr("\n");
 	// ft_putstr(" minus = ");ft_putnbr(sflags->minus);ft_putstr("\n");
+	// ft_putstr(" precision = ");ft_putnbr(sflags->precision);ft_putstr("\n");
 	// ft_putstr(" width = ");ft_putnbr(sflags->width);ft_putstr("\n");
 	// ft_putstr(" cpy_len = ");ft_putnbr(cpy_len);ft_putstr("\n");
 	if (sflags->plus || sflags->space || sflags->zero || sflags->hashtag)
@@ -113,14 +114,21 @@ wchar_t	*ft_conv_walpha(wchar_t *param, t_flags *sflags)
 		i++;
 	}
 	if (cpy_len)
-	{	ft_wstrncpy(final_p + i, param, cpy_len);
-		return (final_p);
+	{
+		ft_wstrncpy(final_p + i, param, cpy_len);
+
 	}
 	else
 	{
 		write(1, "\0", 1);
 		return (param);
 	}
+	while (sflags->minus && new_len > cpy_len && i < sflags->width - cpy_len)
+	{
+		final_p[ft_wstrlen(param) + i] = ' ';
+		i++;
+	}
+	return (final_p);
 	if (sflags->type == 'C' && !p_len)
 			sflags->emptyc = 1;
 

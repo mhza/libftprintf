@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/17 18:06:02 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/19 11:31:20 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/19 16:59:43 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,7 @@ void				ft_putnbr_base(int nb, int base);
 int					ft_atoi_base(const char *str, int str_base);
 char				*ft_itoa_base(long value, int base);
 size_t				ft_wstrlen(const wchar_t *ws);
+size_t				ft_wbyteslen(const wchar_t *ws);
 size_t				ft_wputstr(const wchar_t *s);
 int					ft_wputchar(wchar_t c);
 wchar_t				*ft_wstrncpy(wchar_t *dest, const wchar_t *src, size_t n);
