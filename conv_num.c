@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/07 17:50:15 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/19 18:11:05 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/19 22:16:08 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	ft_if_ox(t_arg *arg, t_flags *f)
 		prefix = ft_toupperstr(prefix);
 	}
 	arg->prefix = prefix;
-	if (!ft_strcmp(arg->param, "0") && f->type == 'o' && (!f->precision && f->dot && !f->hashtag))
+	if ((!ft_strcmp(arg->param, "0") && f->type == 'o' && (!f->precision && f->dot && !f->hashtag)) || (f->dot && !f->precision && f->type == 'p'))
 		arg->param = "";
 }
 
