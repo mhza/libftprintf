@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/07 17:50:15 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/19 22:16:08 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/19 23:32:46 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	ft_if_ox(t_arg *arg, t_flags *f)
 	if (f->type == 'X' || f->type == 'x' || f->type == 'p')
 		pre_len = !is_nul || f->type == 'p' ? 2 : 0;
 	else
-		pre_len = is_nul ? 0 : 1;
+		pre_len = is_nul || (f->hashtag && f->dot && f->precision) ? 0 : 1;
 	prefix = ft_strnew(pre_len);
 	if (f->hashtag || f->type == 'p')
 		prefix = ft_strncpy(prefix, "0x", pre_len);
@@ -50,7 +50,8 @@ void	ft_if_ox(t_arg *arg, t_flags *f)
 		prefix = ft_toupperstr(prefix);
 	}
 	arg->prefix = prefix;
-	if ((!ft_strcmp(arg->param, "0") && f->type == 'o' && (!f->precision && f->dot && !f->hashtag)) || (f->dot && !f->precision && f->type == 'p'))
+	if ((!ft_strcmp(arg->param, "0") && f->type == 'o' && (!f->precision &&
+		f->dot && !f->hashtag)) || (f->dot && !f->precision && f->type == 'p'))
 		arg->param = "";
 }
 
@@ -140,8 +141,8 @@ char	*ft_conv_num(char *param, t_flags *f)
 		ft_if_pluspace(arg, f);
 	if (f->precision)
 		ft_if_precision(arg, f);
-	if (!ft_strcmp(arg->param, "0") && f->dot && !f->precision &&
-	(!f->fc || f->fc == U_INT))
+	if (!ft_strcmp(arg->param, "0") && f->dot && !f->precision && f->type != 'o'
+	&& (!f->fc || f->fc == U_INT))
 		arg->param = "";
 	if (f->width)
 		ft_if_width(arg, f);

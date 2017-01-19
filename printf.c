@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/06 13:45:32 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/19 17:40:12 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/19 23:53:31 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,9 @@ char	*ft_print_params(char *str, t_flags *sflags, va_list ap, int *tl)
 					return (NULL);
 			}
 		}
-
 	}
 	else if (type == '%' && !sflags->percent)
 	{
-		//return (NULL);
 		sflags->space = 0;
 		param = ft_conv_alpha(ft_ctoa(type), sflags);
 	}
@@ -88,14 +86,18 @@ int		ft_printf(char *str, ...)
 	int		len;
 	t_flags	sflags;
 
-	total_length = (int*)malloc(sizeof(int));
+	if ((total_length = ft_memalloc(sizeof(total_length))) == NULL)
+		return (-1);
 	*total_length = 0;
 	va_start(ap, str);
 	while (str && *str && ft_strchr(str, '%'))
 	{
 		if ((str = ft_print_str(str, total_length) + 1))
-		{	if ((flags = ft_get_flags(str)))
+		{
+			if ((flags = ft_get_flags(str)))
 			{
+				if (ft_strchr(flags, '*'))
+					return (-1);
 				ft_bzero(&sflags, sizeof(t_flags));
 				len = ft_strlen(flags);
 				if (!len)

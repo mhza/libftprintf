@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/07 17:50:15 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/19 22:08:53 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/19 23:49:00 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,22 +42,17 @@ char	*ft_conv_alpha(char *param, t_flags *sflags)
 	int		p_len;
 	int		i;
 
-	if (!param)
+	if (!param && !sflags->width)
 	{
 		final_p = ft_strnew(6);
 		final_p = "(null)";
 		return (final_p);
 	}
 	p_len = ft_strlen(param);
-	cpy_len = sflags->dot && sflags->precision < p_len ? sflags->precision
+	cpy_len = sflags->dot && sflags->precision < p_len && sflags->type != '%' ?
+	sflags->precision
 	: p_len;
 	new_len = sflags->width > cpy_len ? sflags->width : cpy_len;
-
-	// ft_putstr(" p_len = ");ft_putnbr(p_len);ft_putstr("\n");
-	// ft_putstr(" new_len = ");ft_putnbr(new_len);ft_putstr("\n");
-	// ft_putstr(" minus = ");ft_putnbr(sflags->minus);ft_putstr("\n");
-	// ft_putstr(" width = ");ft_putnbr(sflags->width);ft_putstr("\n");
-	// ft_putstr(" cpy_len = ");ft_putnbr(cpy_len);ft_putstr("\n");
 	if (sflags->type != '%' && (sflags->hashtag))
 		return (NULL);
 	if ((final_p = ft_strnew((size_t)new_len)) == NULL)
@@ -82,6 +77,7 @@ char	*ft_conv_alpha(char *param, t_flags *sflags)
 	}
 	return (final_p);
 }
+
 int		ft_get_nb_wchar(wchar_t *src, int n)
 {
 	unsigned int	i;
@@ -92,19 +88,20 @@ int		ft_get_nb_wchar(wchar_t *src, int n)
 	while (ibytes < n && src[i])
 	{
 		if (src[i] <= ft_atoi_base("7F", 16) && ibytes + 1 <= n)
-			ibytes+=1;
+			ibytes += 1;
 		else if (src[i] <= ft_atoi_base("7FF", 16) && ibytes + 2 <= n)
-			ibytes+=2;
+			ibytes += 2;
 		else if (src[i] <= ft_atoi_base("FFFF", 16) && ibytes + 3 <= n)
-			ibytes+=3;
+			ibytes += 3;
 		else if (src[i] <= ft_atoi_base("10FFFF", 16) && ibytes + 4 <= n)
-			ibytes+=4;
+			ibytes += 4;
 		else
 			return (i);
 		i++;
 	}
 	return (i);
 }
+
 int		ft_get_nb_bytes(wchar_t *src, int n)
 {
 	unsigned int	i;
@@ -115,18 +112,19 @@ int		ft_get_nb_bytes(wchar_t *src, int n)
 	while (i < n && src[i])
 	{
 		if (src[i] <= ft_atoi_base("7F", 16))
-			ibytes+=1;
+			ibytes += 1;
 		else if (src[i] <= ft_atoi_base("7FF", 16))
-			ibytes+=2;
+			ibytes += 2;
 		else if (src[i] <= ft_atoi_base("FFFF", 16))
-			ibytes+=3;
+			ibytes += 3;
 		else if (src[i] <= ft_atoi_base("10FFFF", 16))
-			ibytes+=4;
+			ibytes += 4;
 		i++;
 	}
 	return (ibytes);
 }
-wchar_t	*ft_conv_walpha(wchar_t *param, t_flags *sflags)
+
+wchar_t		*ft_conv_walpha(wchar_t *param, t_flags *sflags)
 {
 	wchar_t	*final_p;
 	int		new_len;
@@ -141,14 +139,7 @@ wchar_t	*ft_conv_walpha(wchar_t *param, t_flags *sflags)
 	else
 		cpy_len = ft_wbyteslen(param);
 	p_len = ft_get_nb_bytes(param, cpy_len);
-
 	new_len = sflags->width > cpy_len ? sflags->width : cpy_len;
-	// ft_putstr(" p_len = ");ft_putnbr(p_len);ft_putstr("\n");
-	// ft_putstr(" new_len = ");ft_putnbr(new_len);ft_putstr("\n");
-	// ft_putstr(" minus = ");ft_putnbr(sflags->minus);ft_putstr("\n");
-	// ft_putstr(" precision = ");ft_putnbr(sflags->precision);ft_putstr("\n");
-	// ft_putstr(" width = ");ft_putnbr(sflags->width);ft_putstr("\n");
-	// ft_putstr(" cpy_len = ");ft_putnbr(cpy_len);ft_putstr("\n");
 	if (sflags->hashtag)
 		return (NULL);
 	if ((final_p = (wchar_t*)malloc(sizeof(final_p) * new_len)) == NULL)
@@ -160,12 +151,7 @@ wchar_t	*ft_conv_walpha(wchar_t *param, t_flags *sflags)
 		i++;
 	}
 	if (cpy_len || (sflags->type == 'S' && (sflags->dot || sflags->width)))
-	{
-		// if (!sflags->precision && !sflags->width)
-			ft_wstrncpy(final_p + i, param, cpy_len);
-		// else
-		// 	ft_wstrncpyp(final_p + i, param, cpy_len);
-	}
+		ft_wstrncpy(final_p + i, param, cpy_len);
 	else
 	{
 		if (sflags->type == 'C')
@@ -177,8 +163,7 @@ wchar_t	*ft_conv_walpha(wchar_t *param, t_flags *sflags)
 		final_p[ft_wstrlen(param) + i] = ' ';
 		i++;
 	}
-
 	if (sflags->type == 'C' && !p_len)
-			sflags->emptyc = 1;
+		sflags->emptyc = 1;
 	return (final_p);
 }

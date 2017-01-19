@@ -6,61 +6,59 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/11 09:48:57 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/19 22:19:27 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/19 23:29:52 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_cast_type(t_flags *flags, va_list ap, int base, int *tl)
+char	*ft_cast_type(t_flags *f, va_list ap, int base, int *tl)
 {
 	int tmp;
 
-	if (ft_strchr("dDi", flags->type))
-		if (flags->ic != J)
-			return (ft_conv_num(ft_itoa(va_arg(ap, int)), flags));
+	if (ft_strchr("dDi", f->type))
+		if (f->ic != J)
+			return (ft_conv_num(ft_itoa(va_arg(ap, int)), f));
 		else
 			return (ft_itoa(va_arg(ap, long long)));
-	else if (ft_strchr("uoxX", flags->type))
-		if (flags->ic != J)
-			return (ft_conv_num(ft_uitoa_b(va_arg(ap, unsigned int), base), flags));
+	else if (ft_strchr("uoxX", f->type))
+		if (f->ic != J)
+			return (ft_conv_num(ft_uitoa_b(va_arg(ap, unsigned int), base), f));
 		else
-			return (ft_conv_num(ft_ulitoa_b(va_arg(ap, uintmax_t), base), flags));
-	else if (ft_strchr("fFeEgGaA", flags->type))
-		return (ft_conv_num(va_arg(ap, char*), flags));
-	else if (ft_strchr("S", flags->type))
+			return (ft_conv_num(ft_ulitoa_b(va_arg(ap, uintmax_t), base), f));
+	else if (ft_strchr("fFeEgGaA", f->type))
+		return (ft_conv_num(va_arg(ap, char*), f));
+	else if (ft_strchr("S", f->type))
 		*tl += ft_wputstr(va_arg(ap, wchar_t*));
-	else if (ft_strchr("s", flags->type))
-		return (ft_conv_alpha(va_arg(ap, char*), flags));
-	else if (flags->type == 'p')
-		return (ft_conv_num(ft_ulitoa_b(va_arg(ap, unsigned long), 16), flags));
-	else if (ft_strchr("c", flags->type))
-		return (ft_conv_alpha(ft_ctoa(va_arg(ap, wchar_t)), flags));
-	else if (ft_strchr("C", flags->type))
+	else if (ft_strchr("s", f->type))
+		return (ft_conv_alpha(va_arg(ap, char*), f));
+	else if (f->type == 'p')
+		return (ft_conv_num(ft_ulitoa_b(va_arg(ap, unsigned long), 16), f));
+	else if (ft_strchr("c", f->type))
+		return (ft_conv_alpha(ft_ctoa(va_arg(ap, wchar_t)), f));
+	else if (ft_strchr("C", f->type))
 	{
 		tmp = *tl;
-		//if (!flags->emptyc)
-			*tl += ft_wputstr(ft_wctoa(va_arg(ap, wint_t)));
+		*tl += ft_wputstr(ft_wctoa(va_arg(ap, wint_t)));
 		*tl = tmp == *tl ? *tl + 1 : *tl;
 	}
 	return (NULL);
 }
 
-char	*ft_cast_alpha(t_flags *flags, va_list ap, int *tl)
+char	*ft_cast_alpha(t_flags *f, va_list ap, int *tl)
 {
 	int tmp;
 
-	if (flags->fc == INT)
-		return (ft_conv_alpha(ft_ctoa((wint_t)va_arg(ap, int)), flags));
-	else if (flags->fc == CHAR_PTR || flags->type == 's')
-		return (ft_conv_alpha(va_arg(ap, char*), flags));
-	else if (flags->fc == WCHAR_T_PTR || flags->type == 'S')
-		*tl += ft_wputstr(ft_conv_walpha((wchar_t*)va_arg(ap, wchar_t*), flags));
-	else if (flags->fc == WINT_T || flags->type == 'C')
+	if (f->fc == INT)
+		return (ft_conv_alpha(ft_ctoa((wint_t)va_arg(ap, int)), f));
+	else if (f->fc == CHAR_PTR || f->type == 's')
+		return (ft_conv_alpha(va_arg(ap, char*), f));
+	else if (f->fc == WCHAR_T_PTR || f->type == 'S')
+		*tl += ft_wputstr(ft_conv_walpha((wchar_t*)va_arg(ap, wchar_t*), f));
+	else if (f->fc == WINT_T || f->type == 'C')
 	{
 		tmp = *tl;
-		//if (!flags->emptyc)
-			*tl += ft_wputstr(ft_conv_walpha(ft_wctoa(va_arg(ap, wchar_t)), flags));
+		*tl += ft_wputstr(ft_conv_walpha(ft_wctoa(va_arg(ap, wchar_t)), f));
 		*tl = tmp == *tl ? *tl + 1 : *tl;
 	}
 	return (NULL);
@@ -84,41 +82,45 @@ char	*ft_cast_digit(t_flags *flags, va_list ap)
 char	*ft_cast_digit_base(t_flags *flag, va_list ap, int base)
 {
 	if (flag->fc == U_CHAR)
-		return (ft_conv_num(ft_uitoa_b((unsigned char)va_arg(ap, unsigned int), base), flag));
+		return (ft_conv_num(ft_uitoa_b((unsigned char)va_arg(ap, unsigned int),
+		base), flag));
 	else if (flag->fc == U_SHORT_I)
-		return (ft_conv_num(ft_ulitoa_b((unsigned short int)va_arg(ap, unsigned int), base), flag));
+		return (ft_conv_num(ft_ulitoa_b((unsigned short int)
+		va_arg(ap, unsigned int), base), flag));
 	else if (flag->fc == U_LONG_I)
-		return (ft_conv_num(ft_ulitoa_b(va_arg(ap, unsigned long), base), flag));
+		return (ft_conv_num(ft_ulitoa_b(va_arg(ap, unsigned long), base),
+		flag));
 	else if (flag->fc == U_LONG_LONG_I)
-		return (ft_conv_num(ft_ulitoa_b(va_arg(ap, unsigned long), base), flag));
+		return (ft_conv_num(ft_ulitoa_b(va_arg(ap, unsigned long), base),
+		flag));
 	else if (flag->fc == U_INTMAX_T)
 		return (ft_conv_num(ft_ulitoa_b(va_arg(ap, uintmax_t), base), flag));
 	return (NULL);
 }
 
-char	*ft_cast_arg(t_flags *flags, va_list ap, int *tl)
+char	*ft_cast_arg(t_flags *f, va_list ap, int *tl)
 {
 	int	base;
 
 	base = 10;
-	if (flags->type == 'o')
+	if (f->type == 'o')
 		base = 8;
-	else if (flags->type == 'x' || flags->type == 'X')
+	else if (f->type == 'x' || f->type == 'X')
 		base = 16;
-	else if (ft_strchr("difFeEgGaA", flags->type))
+	else if (ft_strchr("difFeEgGaA", f->type))
 		base = 10;
-	if ((!flags->ic && !ft_strchr("sScC", flags->type)) ||
-	ft_strchr("p", flags->type) || flags->ic == J)
-		return (ft_cast_type(flags, ap, base, tl));
-	else if ((flags->fc >= INT && flags->fc <= WCHAR_T_PTR))
-		return (ft_cast_alpha(flags, ap, tl));
-	else if (flags->fc >= S_CHAR && flags->fc <= INTMAX_T)
-		return (ft_cast_digit(flags, ap));
-	else if (flags->fc >= U_INT && flags->fc <= U_INTMAX_T)
-		return (ft_cast_digit_base(flags, ap, base));
-	else if (flags->ic == SIZE_T && ft_strchr("di", flags->type))
-		return (ft_conv_num(ft_itoa((size_t)va_arg(ap, size_t)), flags));
-	else if (flags->ic == SIZE_T && ft_strchr("uoxX", flags->type))
-		return (ft_conv_num(ft_ulitoa_b((size_t)va_arg(ap, size_t), base), flags));
+	if ((!f->ic && !ft_strchr("sScC", f->type)) || ft_strchr("p", f->type) ||
+	f->ic == J)
+		return (ft_cast_type(f, ap, base, tl));
+	else if ((f->fc >= INT && f->fc <= WCHAR_T_PTR))
+		return (ft_cast_alpha(f, ap, tl));
+	else if (f->fc >= S_CHAR && f->fc <= INTMAX_T)
+		return (ft_cast_digit(f, ap));
+	else if (f->fc >= U_INT && f->fc <= U_INTMAX_T)
+		return (ft_cast_digit_base(f, ap, base));
+	else if (f->ic == SIZE_T && ft_strchr("di", f->type))
+		return (ft_conv_num(ft_itoa((size_t)va_arg(ap, size_t)), f));
+	else if (f->ic == SIZE_T && ft_strchr("uoxX", f->type))
+		return (ft_conv_num(ft_ulitoa_b((size_t)va_arg(ap, size_t), base), f));
 	return (NULL);
 }
