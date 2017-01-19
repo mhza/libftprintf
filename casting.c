@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/11 09:48:57 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/19 17:48:29 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/19 22:19:27 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ char	*ft_cast_digit_base(t_flags *flag, va_list ap, int base)
 	if (flag->fc == U_CHAR)
 		return (ft_conv_num(ft_uitoa_b((unsigned char)va_arg(ap, unsigned int), base), flag));
 	else if (flag->fc == U_SHORT_I)
-		return (ft_conv_num(ft_ulitoa_b(va_arg(ap, unsigned int), base), flag));
+		return (ft_conv_num(ft_ulitoa_b((unsigned short int)va_arg(ap, unsigned int), base), flag));
 	else if (flag->fc == U_LONG_I)
 		return (ft_conv_num(ft_ulitoa_b(va_arg(ap, unsigned long), base), flag));
 	else if (flag->fc == U_LONG_LONG_I)
