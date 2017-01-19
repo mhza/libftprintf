@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/07 17:50:15 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/19 17:55:31 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/19 18:32:27 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,10 @@ wchar_t	*ft_conv_walpha(wchar_t *param, t_flags *sflags)
 	}
 	if (cpy_len)
 	{
-		ft_wstrncpy(final_p + i, param, cpy_len);
+		if (!sflags->precision)
+			ft_wstrncpy(final_p + i, param, cpy_len);
+		else
+			ft_wstrncpyp(final_p + i, param, cpy_len);
 
 	}
 	else

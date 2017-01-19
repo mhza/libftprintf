@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/17 18:06:02 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/19 16:59:43 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/19 18:30:04 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,5 +161,6 @@ size_t				ft_wputstr(const wchar_t *s);
 int					ft_wputchar(wchar_t c);
 wchar_t				*ft_wstrncpy(wchar_t *dest, const wchar_t *src, size_t n);
 char				*ft_wgetchar(wchar_t c);
+wchar_t				*ft_wstrncpyp(wchar_t *dest, const wchar_t *src, size_t n);
 
 #endif
