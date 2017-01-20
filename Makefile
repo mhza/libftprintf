@@ -6,7 +6,7 @@
 #    By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/18 16:29:51 by mhaziza           #+#    #+#              #
-#    Updated: 2017/01/19 18:30:29 by mhaziza          ###   ########.fr        #
+#    Updated: 2017/01/20 11:30:21 by mhaziza          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,13 +78,19 @@ SRCS	=   ft_memset.c \
 			ft_wstrncpy.c \
 			ft_wstrncpyp.c \
 			printf.c \
+			print_params.c  \
 			conv_alpha.c \
 			conv_num.c \
+			conv_num_flags.c \
 			flags_utils.c \
 			ft_uitoa_b.c \
 			ft_ulitoa_b.c \
 			casting.c \
+			casting_type.c \
 			ft_wgetchar.c \
+			conv_walpha.c \
+			ft_get_nb_wchar.c \
+			ft_get_nb_bytes.c \
 
 OBJS	=   $(SRCS:.c=.o)
 

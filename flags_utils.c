@@ -6,34 +6,32 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/07 18:33:23 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/19 23:51:30 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/20 11:18:43 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_get_flags(char *str)
+void	typeformat2(t_flags *e)
 {
-	char	*next_type;
-	char	*flags;
-	int		position;
-	int		first;
-	int		i;
-
-	i = -1;
-	position = -1;
-	first = -1;
-	while (LTYPES[++i])
+	if (e->type == 'U')
 	{
-		if ((next_type = ft_strchr(str, LTYPES[i])) && (first < 0 ||
-			next_type - str < first))
-			first = next_type - str + 1;
+		e->type = 'u';
+		e->ic = L;
+		e->fc = e->ic + 10;
 	}
-	if (first == -1)
-		return (NULL);
-	if (!(flags = (char*)malloc(first + 1)))
-		return (NULL);
-	return (ft_strncpy(flags, str, first));
+	else if (e->type == 'D')
+	{
+		e->type = 'd';
+		e->ic = L;
+		e->fc = e->ic;
+	}
+	else if (e->type == 'O')
+	{
+		e->type = 'o';
+		e->ic = L;
+		e->fc = e->ic + 10;
+	}
 }
 
 void	typeformat(t_flags *e)
@@ -58,24 +56,8 @@ void	typeformat(t_flags *e)
 	}
 	else if (e->type == 'p' && e->ic == 0)
 		e->fc = VOID_PTR;
-	else if (e->type == 'U')
-	{
-		e->type = 'u';
-		e->ic = L;
-		e->fc = e->ic + 10;
-	}
-	else if (e->type == 'D')
-	{
-		e->type = 'd';
-		e->ic = L;
-		e->fc = e->ic;
-	}
-	else if (e->type == 'O')
-	{
-		e->type = 'o';
-		e->ic = L;
-		e->fc = e->ic + 10;
-	}
+	else
+		typeformat2(e);
 }
 
 void	ft_special_flags(char *str, t_flags *sflags)
@@ -100,7 +82,26 @@ void	ft_special_flags(char *str, t_flags *sflags)
 		sflags->ic = Z;
 }
 
-int	ft_set_flags(t_flags *sflags, char *flags, int len)
+void	ft_check_flags(t_flags *sflags, char *flags)
+{
+	if (sflags->type == '%' && !ft_isdigit(*flags) &&
+	!ft_strchr(" .+-", *flags))
+		sflags->percent = -1;
+	if (sflags->type == '%' && *(flags + 1) && !ft_isdigit(*(flags + 1)) &&
+	!ft_strchr(" .+-", *(flags + 1)))
+		sflags->percent = -1;
+	if (sflags->type != '%' && !ft_isdigit(*flags) &&
+	!ft_strchr(" jzlh#.+-", *flags))
+		sflags->is_invalid = 1;
+	if (*flags == '#')
+		sflags->hashtag += 1;
+	if (*flags == '0' && !sflags->width && !sflags->precision)
+		sflags->zero += 1;
+	if (*flags == '-')
+		sflags->minus += 1;
+}
+
+int		ft_set_flags(t_flags *sflags, char *flags, int len)
 {
 	if (sflags->type != '%')
 		sflags->type = flags[len - 1];
@@ -108,21 +109,7 @@ int	ft_set_flags(t_flags *sflags, char *flags, int len)
 	sflags->flags_len = ft_strlen(flags);
 	while (*flags && *(flags + 1))
 	{
-		if (sflags->type == '%' && !ft_isdigit(*flags) &&
-		!ft_strchr(" .+-", *flags))
-			sflags->percent = -1;
-		if (sflags->type == '%' && *(flags + 1) && !ft_isdigit(*(flags + 1)) &&
-		!ft_strchr(" .+-", *(flags + 1)))
-			sflags->percent = -1;
-		if (sflags->type != '%' && !ft_isdigit(*flags) &&
-		!ft_strchr(" jzlh#.+-", *flags))
-			sflags->is_invalid = 1;
-		if (*flags == '#')
-			sflags->hashtag += 1;
-		if (*flags == '0' && !sflags->width && !sflags->precision)
-			sflags->zero += 1;
-		if (*flags == '-')
-			sflags->minus += 1;
+		ft_check_flags(sflags, flags);
 		if (*flags == '+')
 			sflags->plus += 1;
 		if (*flags == ' ')

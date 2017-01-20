@@ -6,13 +6,13 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/07 17:50:15 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/19 23:49:00 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/20 11:28:57 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_ctoa(int c)
+char		*ft_ctoa(int c)
 {
 	char	*str;
 
@@ -23,7 +23,7 @@ char	*ft_ctoa(int c)
 	return (str);
 }
 
-wchar_t	*ft_wctoa(wchar_t c)
+wchar_t		*ft_wctoa(wchar_t c)
 {
 	wchar_t	*str;
 
@@ -34,7 +34,7 @@ wchar_t	*ft_wctoa(wchar_t c)
 	return (str);
 }
 
-char	*ft_conv_alpha(char *param, t_flags *sflags)
+char		*ft_conv_alpha(char *param, t_flags *sflags)
 {
 	char	*final_p;
 	int		new_len;
@@ -78,7 +78,7 @@ char	*ft_conv_alpha(char *param, t_flags *sflags)
 	return (final_p);
 }
 
-int		ft_get_nb_wchar(wchar_t *src, int n)
+int			ft_get_nb_wchar(wchar_t *src, int n)
 {
 	unsigned int	i;
 	unsigned int	ibytes;
@@ -102,7 +102,7 @@ int		ft_get_nb_wchar(wchar_t *src, int n)
 	return (i);
 }
 
-int		ft_get_nb_bytes(wchar_t *src, int n)
+int			ft_get_nb_bytes(wchar_t *src, int n)
 {
 	unsigned int	i;
 	unsigned int	ibytes;

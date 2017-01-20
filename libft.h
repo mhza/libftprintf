@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/17 18:06:02 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/19 18:30:04 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/20 11:30:41 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,21 +80,28 @@ typedef struct	s_flags {
 	int		flags_len;
 }				t_flags;
 
-int				ft_printf(char *str, ...);
-char			*ft_conv_num(char *param, t_flags *sflags);
-void			ft_special_flags(char *str, t_flags *sflags);
-int				ft_set_flags(t_flags *sflags, char *flags, int len);
-char			*ft_get_flags(char *str);
-char			*ft_uitoa_b(unsigned int value, int base);
-char			*ft_ulitoa_b(uintmax_t value, int base);
-char			*ft_man_width(char *param, t_flags *sflags);
-char			*ft_man_precision(char *param, t_flags *sflags);
-char			*ft_man_minus(char *param);
-char			*ft_cast_arg(t_flags *flags, va_list ap, int *tl);
-char			*ft_ctoa(int c);
-wchar_t			*ft_wctoa(wchar_t c);
-char			*ft_conv_alpha(char *param, t_flags *sflags);
-wchar_t			*ft_conv_walpha(wchar_t *param, t_flags *sflags);
+int					ft_printf(char *str, ...);
+char				*ft_print_params(char *str, t_flags *sflags, va_list ap, int *tl);
+char				*ft_print_str(char *str, int *tl);
+char				*ft_conv_num(char *param, t_flags *sflags);
+void				ft_if_pluspace(t_arg *arg, t_flags *f);
+void				ft_if_width(t_arg *arg, t_flags *f);
+void				ft_if_precision(t_arg *arg, t_flags *f);
+void				ft_special_flags(char *str, t_flags *sflags);
+int					ft_set_flags(t_flags *sflags, char *flags, int len);
+char				*ft_get_flags(char *str);
+char				*ft_uitoa_b(unsigned int value, int base);
+char				*ft_ulitoa_b(uintmax_t value, int base);
+char				*ft_man_width(char *param, t_flags *sflags);
+char				*ft_man_precision(char *param, t_flags *sflags);
+char				*ft_man_minus(char *param);
+char				*ft_cast_arg(t_flags *flags, va_list ap, int *tl);
+char				*ft_ctoa(int c);
+wchar_t				*ft_wctoa(wchar_t c);
+char				*ft_conv_alpha(char *param, t_flags *sflags);
+wchar_t				*ft_conv_walpha(wchar_t *param, t_flags *sflags);
+char				*ft_cast_type2(t_flags *f, va_list ap, int *tl);
+char				*ft_cast_type(t_flags *f, va_list ap, int base, int *tl);
 
 void				*ft_memset(void *s, int c, size_t n);
 void				ft_bzero(void *s, int n);
@@ -162,5 +169,7 @@ int					ft_wputchar(wchar_t c);
 wchar_t				*ft_wstrncpy(wchar_t *dest, const wchar_t *src, size_t n);
 char				*ft_wgetchar(wchar_t c);
 wchar_t				*ft_wstrncpyp(wchar_t *dest, const wchar_t *src, size_t n);
+int					ft_get_nb_wchar(wchar_t *src, int n);
+int					ft_get_nb_bytes(wchar_t *src, int n);
 
 #endif
