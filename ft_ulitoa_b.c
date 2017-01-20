@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/23 17:21:11 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/18 11:53:57 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/20 17:43:42 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,3 @@ char		*ft_ulitoa_b(uintmax_t value, int base)
 	}
 	return (tmp);
 }
-//unsigned long

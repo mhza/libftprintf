@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/23 16:42:34 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/16 05:20:40 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/20 17:36:43 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,6 @@ size_t	ft_intlen_base(long long n, int base)
 
 	i = 1;
 	while (n /= base)
-			i++;
+		i++;
 	return (i);
 }

@@ -6,18 +6,16 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/08 18:48:09 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/19 15:07:01 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/20 17:48:36 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	ft_putwchar2(wchar_t c)
+static int	ft_putwchar2(wchar_t c, unsigned char byte)
 {
 	static unsigned short	mask[] = {128, 192, 224, 240, 63};
-	unsigned char			byte;
 
-	byte = 0;
 	if (c <= ft_atoi_base("FFFF", 16))
 	{
 		byte = mask[2] + (c >> 12);
@@ -43,7 +41,7 @@ static int	ft_putwchar2(wchar_t c)
 	return (0);
 }
 
-int		ft_wputchar(wchar_t c)
+int			ft_wputchar(wchar_t c)
 {
 	static unsigned short	mask[] = {128, 192, 224, 240, 63};
 	unsigned char			byte;
@@ -67,6 +65,6 @@ int		ft_wputchar(wchar_t c)
 		return (2);
 	}
 	else if (c <= ft_atoi_base("10FFFF", 16))
-		return (ft_putwchar2(c));
+		return (ft_putwchar2(c, 0));
 	return (0);
 }

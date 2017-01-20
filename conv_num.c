@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/07 17:50:15 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/20 11:22:02 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/20 18:25:24 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,21 @@ void	ft_if_ox(t_arg *arg, t_flags *f)
 		arg->param = "";
 }
 
+void	ft_cast(t_arg *arg, t_flags *f)
+{
+	if (ft_strchr("poxX", f->type))
+		ft_if_ox(arg, f);
+	else if (*arg->param != '-' && f->type != 'u' && (f->plus || f->space))
+		ft_if_pluspace(arg, f);
+	if (f->precision)
+		ft_if_precision(arg, f);
+	if (!ft_strcmp(arg->param, "0") && f->dot && !f->precision && f->type != 'o'
+	&& (!f->fc || f->fc == U_INT))
+		arg->param = "";
+	if (f->width)
+		ft_if_width(arg, f);
+}
+
 char	*ft_conv_num(char *param, t_flags *f)
 {
 	size_t	final_len;
@@ -54,17 +69,7 @@ char	*ft_conv_num(char *param, t_flags *f)
 	arg->prefix = ft_memalloc(sizeof(char) + 1);
 	arg->suffix = ft_memalloc(sizeof(char) + 1);
 	arg->param = param;
-	if (ft_strchr("poxX", f->type))
-		ft_if_ox(arg, f);
-	else if (*arg->param != '-' && f->type != 'u' && (f->plus || f->space))
-		ft_if_pluspace(arg, f);
-	if (f->precision)
-		ft_if_precision(arg, f);
-	if (!ft_strcmp(arg->param, "0") && f->dot && !f->precision && f->type != 'o'
-	&& (!f->fc || f->fc == U_INT))
-		arg->param = "";
-	if (f->width)
-		ft_if_width(arg, f);
+	ft_cast(arg, f);
 	pre_len = ft_strlen(arg->prefix);
 	p_len = ft_strlen(arg->param);
 	final_len = pre_len + p_len + ft_strlen(arg->suffix);

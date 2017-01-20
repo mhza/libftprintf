@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/06 13:45:32 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/20 10:58:43 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/20 19:38:41 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,46 +36,64 @@ char	*ft_get_flags(char *str)
 	return (ft_strncpy(flags, str, first));
 }
 
-int		ft_printf(char *str, ...)
+int		ft_if_flags(char *flags, char *str, t_flags *sflags)
 {
-	va_list	ap;
+	int		len;
+
+	if (ft_strchr(flags, '*'))
+		return (-1);
+	ft_bzero(sflags, sizeof(t_flags));
+	len = ft_strlen(flags);
+	if (!len)
+		return (0);
+	if (len >= 1)
+		ft_set_flags(sflags, flags, len);
+}
+
+void	ft_if_not_flags(char *flags, char *str, t_flags *sflags)
+{
+	ft_bzero(sflags, sizeof(t_flags));
+	sflags->type = '%';
+	ft_set_flags(sflags, str, ft_strlen(str));
+}
+
+int		ft_init_printf(char *str, va_list ap, int *total_length)
+{
 	char	*flags;
-	int		*total_length;
 	int		len;
 	t_flags	sflags;
 
-	if ((total_length = ft_memalloc(sizeof(total_length))) == NULL)
-		return (-1);
-	*total_length = 0;
-	va_start(ap, str);
 	while (str && *str && ft_strchr(str, '%'))
 	{
 		if ((str = ft_print_str(str, total_length) + 1))
 		{
 			if ((flags = ft_get_flags(str)))
 			{
-				if (ft_strchr(flags, '*'))
+				if (ft_if_flags(flags, str, &sflags) == -1)
 					return (-1);
-				ft_bzero(&sflags, sizeof(t_flags));
-				len = ft_strlen(flags);
-				if (!len)
-					return (0);
-				if (len >= 1)
-					ft_set_flags(&sflags, flags, len);
 				str = ft_print_params(str, &sflags, ap, total_length) - 1;
 				ft_bzero(flags, ft_strlen(flags));
 			}
 			else if (ft_strlen(str) > 1)
 			{
-				ft_bzero(&sflags, sizeof(t_flags));
-				sflags.type = '%';
-				ft_set_flags(&sflags, str, ft_strlen(str));
+				ft_if_not_flags(flags, str, &sflags);
 				str = ft_print_params(str, &sflags, ap, total_length) - 1;
 			}
 		}
 	}
 	if (str)
 		*total_length += ft_putstr(str);
-	va_end(ap);
 	return (*total_length);
+}
+
+int		ft_printf(char *str, ...)
+{
+	va_list	ap;
+	int		total_length;
+
+	total_length = 0;
+	va_start(ap, str);
+	total_length = ft_init_printf(str, ap, &total_length);
+	va_end(ap);
+	return (total_length);
 }

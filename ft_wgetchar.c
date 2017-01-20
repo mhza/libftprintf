@@ -6,7 +6,7 @@
 /*   By: mhaziza <mhaziza@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/08 18:48:09 by mhaziza           #+#    #+#             */
-/*   Updated: 2017/01/15 22:21:50 by mhaziza          ###   ########.fr       */
+/*   Updated: 2017/01/20 17:44:12 by mhaziza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static void	ft_wgetchar2(wchar_t c, char *wstr)
 {
 	static unsigned short	mask[] = {128, 192, 224, 240, 63};
+
 	if (c <= ft_atoi_base("FFFF", 16))
 	{
 		wstr[0] = mask[2] + (c >> 12);
